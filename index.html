@@ -2,47 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Jhalok Masti</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .video-card { height: 100vh; position: relative; background: #000; overflow: hidden; }
-        video { object-fit: cover; width: 100%; height: 100%; }
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
+        .video-container { height: 100vh; width: 100vw; position: relative; }
+        video { 
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; object-fit: cover; 
+        }
+        .overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 80px 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        }
     </style>
 </head>
-<body class="bg-black text-white">
+<body>
 
-    <header class="fixed top-0 w-full z-50 p-4 bg-gradient-to-b from-black to-transparent">
-        <h1 class="text-2xl font-bold text-orange-500 italic">JHALOK MASTI</h1>
-    </header>
+    <div class="fixed top-6 left-0 w-full z-50 text-center">
+        <h1 class="text-2xl font-black text-orange-500 italic tracking-tighter drop-shadow-md">JHALOK MASTI</h1>
+    </div>
 
-    <div class="video-card">
-        <video id="myVideo" loop playsinline autoplay muted
+    <div class="video-container" onclick="togglePlay()">
+        <video id="mainVideo" loop playsinline autoplay muted
                src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
         
-        <div class="absolute bottom-24 left-4">
-            <h3 class="font-bold">@User_One</h3>
-            <p class="text-sm font-light">আমার প্রথম সফল ভিডিও অ্যাপ! 🚀</p>
+        <div class="overlay">
+            <h3 class="font-bold text-lg text-white">@My_Jhalok_App</h3>
+            <p class="text-sm text-zinc-300 mt-1">বিনোদনে নতুন ঝলক! আমার নিজের ভিডিও অ্যাপ 🔥</p>
         </div>
 
-        <div class="absolute bottom-28 right-4 flex flex-col gap-6">
-            <button onclick="alert('Liked!')" class="text-3xl">❤️</button>
-            <button onclick="alert('Comment!')" class="text-3xl">💬</button>
+        <div class="absolute bottom-32 right-4 flex flex-col gap-8 items-center">
+            <button onclick="event.stopPropagation(); alert('Liked!')" class="text-4xl drop-shadow-lg">❤️</button>
+            <button onclick="event.stopPropagation(); alert('Comments coming soon!')" class="text-4xl drop-shadow-lg">💬</button>
+            <button onclick="event.stopPropagation(); shareApp()" class="text-4xl drop-shadow-lg">➡️</button>
         </div>
     </div>
 
-    <nav class="fixed bottom-0 w-full p-4 bg-black border-t border-zinc-800 flex justify-around">
-        <button class="text-orange-500 font-bold">Home</button>
-        <button class="text-zinc-500" onclick="alert('Profile Coming!')">Profile</button>
+    <nav class="fixed bottom-0 w-full p-5 bg-black/40 backdrop-blur-sm flex justify-around border-t border-white/10">
+        <button class="text-orange-500 font-bold scale-110">Home</button>
+        <button class="text-zinc-400" onclick="alert('Profile Loading...')">Profile</button>
     </nav>
 
     <script>
-        // সাউন্ড অন করার জন্য স্ক্রিনে ক্লিক করুন
-        document.body.addEventListener('click', function() {
-            var v = document.getElementById('myVideo');
-            v.muted = false;
-            v.play();
-        });
+        const video = document.getElementById('mainVideo');
+        
+        // ভিডিও প্লে/পজ করার ফাংশন
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+                video.muted = false; // টাচ করলে সাউন্ড অন হবে
+            } else {
+                video.pause();
+            }
+        }
+
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({ title: 'Jhalok Masti', url: window.location.href });
+            } else {
+                alert('Link Copied!');
+            }
+        }
     </script>
 </body>
 </html>
