@@ -5,22 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Jhalok Masti - আপনার নিজের ভিডিও!</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
+        <style>
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
         .video-container { height: 100vh; width: 100vw; position: relative; }
-        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-        .overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            padding: 100px 20px 40px; background: linear-gradient(transparent, rgba(0,0,0,0.9));
+        video { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
         }
-    </style>video { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; /* এটি ভিডিওটিকে পুরো স্ক্রিনে ছড়িয়ে দেবে */
-}
+        .overlay {
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%;
+            padding: 100px 20px 40px; 
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            z-index: 10;
+        }
+    </style>
+
 
 </head>
 <body>
