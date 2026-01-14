@@ -1,5 +1,58 @@
-<div class="flex justify-center mt-4">
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://jhalok-masti.vercel.app" 
-         alt="Scan to share Jhalok Masti" 
-         class="border-4 border-orange-500 rounded-lg shadow-lg">
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jhalok Masti - আপনার নিজের ভিডিও!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
+        .video-container { height: 100vh; width: 100vw; position: relative; }
+        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 100px 20px 40px; background: linear-gradient(transparent, rgba(0,0,0,0.9));
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fixed top-6 left-0 w-full z-50 text-center pointer-events-none">
+        <h1 class="text-2xl font-black text-orange-500 italic tracking-tighter drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">JHALOK MASTI</h1>
+    </div>
+
+    <div class="video-container" onclick="togglePlay()">
+        <video id="mainVideo" loop playsinline autoplay muted
+               src="https://drive.google.com/uc?export=download&id=1RMux4l33OZXSHEAtOY0BwORrTCFlhUCd"></video>
+        
+        <div class="overlay">
+            <h3 class="font-bold text-lg text-white">@Mozahar_Creator</h3>
+            <p class="text-sm text-zinc-300 mt-1">আমার আপলোড করা প্রথম ভিডিও! 🔥 #JhalokMasti</p>
+        </div>
+
+        <div class="absolute bottom-40 right-4 flex flex-col gap-8 items-center">
+            <button onclick="event.stopPropagation(); alert('Liked!')" class="text-4xl">❤️</button>
+            <button onclick="event.stopPropagation(); alert('Comments coming soon!')" class="text-4xl">💬</button>
+            <button onclick="event.stopPropagation(); shareApp()" class="text-4xl">➡️</button>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-0 w-full p-6 bg-black/60 backdrop-blur-md flex justify-around border-t border-white/10">
+        <button class="text-orange-500 font-bold">Home</button>
+        <button class="text-zinc-400">Profile</button>
+    </nav>
+
+    <script>
+        const video = document.getElementById('mainVideo');
+        function togglePlay() {
+            if (video.paused) { video.play(); video.muted = false; }
+            else { video.pause(); }
+        }
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({ title: 'Jhalok Masti', url: window.location.href });
+            } else { alert('Link Copied!'); }
+        }
+    </script>
+</body>
+</html>
