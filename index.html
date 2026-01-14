@@ -3,52 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jhalok Masti - বিনোদনে নতুন ঝলক!</title>
+    <title>Jhalok Masti</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .video-container { scroll-snap-type: y mandatory; overflow-y: scroll; height: 100vh; }
-        .video-card { scroll-snap-align: start; height: 100vh; position: relative; background: black; }
+        .video-container { scroll-snap-type: y mandatory; overflow-y: scroll; height: 100vh; scrollbar-width: none; }
+        .video-card { scroll-snap-align: start; height: 100vh; position: relative; background: #000; }
         video { object-fit: cover; width: 100%; height: 100%; }
     </style>
 </head>
 <body class="bg-black text-white overflow-hidden">
     <header class="fixed top-0 w-full z-50 flex justify-between p-4 bg-gradient-to-b from-black/80 to-transparent">
         <h1 class="text-2xl font-black text-orange-500 italic">JHALOK MASTI</h1>
-        <div class="bg-orange-500 rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">M</div>
+        <div class="bg-orange-500 rounded-full w-8 h-8 flex items-center justify-center font-bold">M</div>
     </header>
 
     <div class="video-container">
         <div class="video-card">
-            <video loop autoplay muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-girl-dancing-under-neon-lights-34405-large.mp4"></video>
-            <div class="absolute bottom-20 left-4">
+            <video loop playsinline onclick="this.paused ? this.play() : this.pause()" src="https://v1.exhibit.com/dummy-video-1.mp4" poster="https://via.placeholder.com/400x800/orange/white?text=Click+to+Play+Video"></video>
+            <div class="absolute bottom-24 left-4">
                 <h3 class="font-bold">@DanceStar</h3>
-                <p class="text-sm text-zinc-300">নতুন ড্যান্স ভিডিও! #JhalokMasti</p>
+                <p class="text-sm">ঝলক মস্তিতে প্রথম ভিডিও! 🔥</p>
             </div>
-            <div class="absolute bottom-24 right-4 flex flex-col gap-6 items-center">
-                <button class="text-2xl">❤️<br><span class="text-xs">1.2k</span></button>
-                <button class="text-2xl">💬<br><span class="text-xs">45</span></button>
-                <button class="text-2xl">➡️<br><span class="text-xs">Share</span></button>
-            </div>
-        </div>
-        <div class="video-card">
-            <video loop autoplay muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-panning-shot-of-a-dj-at-a-party-41687-large.mp4"></video>
-            <div class="absolute bottom-20 left-4">
-                <h3 class="font-bold">@PartyKing</h3>
-                <p class="text-sm text-zinc-300">পার্টি টাইম উইথ ঝলক মস্তি 🔥</p>
-            </div>
-            <div class="absolute bottom-24 right-4 flex flex-col gap-6 items-center">
-                <button class="text-2xl">❤️<br><span class="text-xs">850</span></button>
-                <button class="text-2xl">💬<br><span class="text-xs">12</span></button>
-                <button class="text-2xl">➡️<br><span class="text-xs">Share</span></button>
+            <div class="absolute bottom-28 right-4 flex flex-col gap-6 items-center">
+                <button onclick="alert('Liked!')" class="text-2xl">❤️</button>
+                <button onclick="alert('Comment section opening...')" class="text-2xl">💬</button>
+                <button onclick="navigator.share({url: location.href})" class="text-2xl">➡️</button>
             </div>
         </div>
     </div>
 
     <nav class="fixed bottom-0 w-full p-4 bg-black/90 flex justify-around border-t border-zinc-800">
-        <button class="text-orange-500 font-bold">Home</button>
+        <button class="text-orange-500">Home</button>
         <button class="text-zinc-500">Discover</button>
-        <button class="text-zinc-500">Profile</button>
+        <button class="text-zinc-500" onclick="alert('Coming Soon!')">Profile</button>
     </nav>
+
+    <script>
+        // ভিডিওতে ক্লিক করলে প্লে হবে এমন মেসেজ
+        document.body.addEventListener('click', function() {
+            const vids = document.querySelectorAll('video');
+            vids.forEach(v => v.play());
+        }, {once: true});
+    </script>
 </body>
-    </html>
-    
+</html>
