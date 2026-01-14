@@ -3,52 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jhalok Masti - ভিডিও ফিড</title>
+    <title>Jhalok Masti</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .video-container { scroll-snap-type: y mandatory; overflow-y: scroll; height: 100vh; scrollbar-width: none; }
-        .video-card { scroll-snap-align: start; height: 100vh; position: relative; background: #000; }
+        .video-card { height: 100vh; position: relative; background: #000; overflow: hidden; }
         video { object-fit: cover; width: 100%; height: 100%; }
-        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-black text-white overflow-hidden">
+<body class="bg-black text-white">
 
-    <header class="fixed top-0 w-full z-50 flex justify-between p-4 bg-gradient-to-b from-black/80 to-transparent">
-        <h1 class="text-2xl font-black text-orange-500 italic tracking-tighter">JHALOK MASTI</h1>
-        <div class="bg-orange-500 rounded-full w-8 h-8 flex items-center justify-center font-bold text-xs">M</div>
+    <header class="fixed top-0 w-full z-50 p-4 bg-gradient-to-b from-black to-transparent">
+        <h1 class="text-2xl font-bold text-orange-500 italic">JHALOK MASTI</h1>
     </header>
 
-    <div class="video-container" id="feed">
-        <div class="video-card">
-            <video loop playsinline onclick="this.paused ? this.play() : this.pause()" 
-                   src="https://assets.mixkit.co/videos/preview/mixkit-dancing-under-the-stars-in-the-city-23010-large.mp4"></video>
-            
-            <div class="absolute bottom-24 left-4">
-                <h3 class="font-bold text-lg">@DanceLover</h3>
-                <p class="text-sm">ঝলক মস্তিতে স্বাগতম! 🔥 #JhalokMasti</p>
-            </div>
+    <div class="video-card">
+        <video id="myVideo" loop playsinline autoplay muted
+               src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+        
+        <div class="absolute bottom-24 left-4">
+            <h3 class="font-bold">@User_One</h3>
+            <p class="text-sm font-light">আমার প্রথম সফল ভিডিও অ্যাপ! 🚀</p>
+        </div>
 
-            <div class="absolute bottom-28 right-4 flex flex-col gap-6 items-center">
-                <button onclick="this.style.color='red'; alert('Liked!')" class="text-3xl transition">❤️<br><span class="text-xs font-normal">1.2k</span></button>
-                <button onclick="alert('Comment section is coming soon!')" class="text-3xl">💬<br><span class="text-xs font-normal">45</span></button>
-                <button onclick="alert('Link Copied to Clipboard!')" class="text-3xl">➡️<br><span class="text-xs font-normal">Share</span></button>
-            </div>
+        <div class="absolute bottom-28 right-4 flex flex-col gap-6">
+            <button onclick="alert('Liked!')" class="text-3xl">❤️</button>
+            <button onclick="alert('Comment!')" class="text-3xl">💬</button>
         </div>
     </div>
 
-    <nav class="fixed bottom-0 w-full p-4 bg-black/90 flex justify-around border-t border-zinc-800">
-        <button class="text-orange-500 font-bold" onclick="location.reload()">Home</button>
-        <button class="text-zinc-500" onclick="alert('Discovering new videos...')">Discover</button>
-        <button class="text-zinc-500" onclick="alert('Profile section under construction!')">Profile</button>
+    <nav class="fixed bottom-0 w-full p-4 bg-black border-t border-zinc-800 flex justify-around">
+        <button class="text-orange-500 font-bold">Home</button>
+        <button class="text-zinc-500" onclick="alert('Profile Coming!')">Profile</button>
     </nav>
 
     <script>
-        // স্ক্রিনে প্রথম টাচ করার সাথে সাথে ভিডিও প্লে হবে
-        window.addEventListener('touchstart', function() {
-            const video = document.querySelector('video');
-            if (video) video.play();
-        }, {once: true});
+        // সাউন্ড অন করার জন্য স্ক্রিনে ক্লিক করুন
+        document.body.addEventListener('click', function() {
+            var v = document.getElementById('myVideo');
+            v.muted = false;
+            v.play();
+        });
     </script>
 </body>
 </html>
