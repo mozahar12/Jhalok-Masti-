@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Jhalok Masti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-black text-white h-screen flex flex-col items-center justify-center p-6">
+
+    <div class="w-full max-w-sm">
+        <h1 class="text-4xl font-bold mb-2 text-center bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">Jhalok Masti</h1>
+        <p class="text-zinc-400 text-center mb-10">আপনার বন্ধুদের সাথে যুক্ত হতে লগইন করুন</p>
+
+        <div class="space-y-4">
+            <input type="text" placeholder="ইউজারনেম বা ইমেইল" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl focus:outline-none focus:border-red-500">
+            <input type="password" placeholder="পাসওয়ার্ড" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl focus:outline-none focus:border-red-500">
+            
+            <button onclick="location.href='index.html'" class="w-full bg-red-600 hover:bg-red-700 p-4 rounded-xl font-bold text-lg transition">
+                লগইন করুন
+            </button>
+        </div>
+
+        <p class="mt-8 text-center text-zinc-500 text-sm">
+            অ্যাকাউন্ট নেই? <span class="text-red-500 font-bold cursor-pointer">সাইন আপ করুন</span>
+        </p>
+    </div>
+
+</body>
+</html>
