@@ -2,48 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jhalok Masti - Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jhalok Masti - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #000; color: white; font-family: sans-serif; }
-        .grid-item { aspect-ratio: 9/16; background-color: #222; overflow: hidden; position: relative; }
-        .grid-item video { width: 100%; height: 100%; object-fit: cover; }
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
+        .app-container { height: 100vh; width: 100vw; position: relative; overflow: hidden; }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        .bottom-nav { position: absolute; bottom: 0; width: 100%; height: 65px; background: #000; display: flex; justify-content: space-around; align-items: center; z-index: 50; border-top: 1px solid #222; }
+        .nav-item { color: #888; font-size: 24px; cursor: pointer; }
+        .nav-item.active { color: white; }
     </style>
 </head>
 <body>
 
-    <div class="p-6 flex flex-col items-center border-b border-zinc-800">
-        <div class="w-24 h-24 rounded-full border-2 border-orange-500 p-1 mb-4">
-            <img src="https://i.pravatar.cc/150?u=mozahar" class="w-full h-full rounded-full object-cover">
-        </div>
-        <h2 class="text-xl font-bold">@Mozahar_Creator</h2>
-        <p class="text-zinc-400 text-sm mb-4 text-center">নতুন ভিডিও দেখতে আমাদের সাথেই থাকুন! 🎬 #JhalokMasti</p>
-        
-        <div class="flex gap-8 text-center mb-6">
-            <div><p class="font-bold">12</p><p class="text-xs text-zinc-500">ভিডিও</p></div>
-            <div><p class="font-bold">45.2K</p><p class="text-xs text-zinc-500">ফলোয়ার</p></div>
-            <div><p class="font-bold">1.2M</p><p class="text-xs text-zinc-500">লাইক</p></div>
-        </div>
+<div class="app-container" id="swipeArea">
+    <video id="mainVideo" playsinline loop src="VID_20251206_041026_071.mp4"></video>
 
-        <button class="bg-zinc-800 px-10 py-2 rounded-lg font-semibold text-sm">Edit Profile</button>
+    <div class="bottom-nav">
+        <div class="nav-item active"><i class="fas fa-home"></i></div>
+        <div class="nav-item"><i class="fas fa-search"></i></div>
+        <div class="nav-item"><i class="far fa-plus-square"></i></div>
+        <div class="nav-item" onclick="window.location.href='profile.html'"><i class="far fa-user-circle"></i></div>
     </div>
+</div>
 
-    <div class="grid grid-cols-3 gap-1 p-1 mb-20">
-        <div class="grid-item"><video src="VID_20251206_041026_071.mp4" muted></video></div>
-        <div class="grid-item"><video src="videos 22.mp4" muted></video></div>
-        <div class="grid-item"></div> <div class="grid-item"></div>
-        <div class="grid-item"></div>
-        <div class="grid-item"></div>
-    </div>
+<script>
+    const videos = ["VID_20251206_041026_071.mp4", "videos 22.mp4"];
+    let vIdx = 0;
+    const player = document.getElementById('mainVideo');
+    let startY = 0;
 
-    <div class="fixed bottom-0 w-full bg-black border-t border-zinc-900 flex justify-around p-4">
-        <i class="fas fa-home text-2xl text-zinc-500 cursor-pointer" onclick="window.location.href='index.html'"></i>
-        <i class="fas fa-search text-2xl text-zinc-500"></i>
-        <i class="fas fa-plus-square text-2xl text-zinc-500"></i>
-        <i class="fas fa-user text-2xl text-white"></i>
-    </div>
+    document.addEventListener('touchstart', e => startY = e.touches[0].clientY);
+    document.addEventListener('touchend', e => {
+        let endY = e.changedTouches[0].clientY;
+        if (startY - endY > 60) {
+            vIdx = (vIdx + 1) % videos.length;
+            player.src = videos[vIdx];
+            player.muted = false;
+            player.play();
+        }
+    });
 
+    document.body.onclick = () => { player.muted = false; player.play(); };
+</script>
 </body>
 </html>
