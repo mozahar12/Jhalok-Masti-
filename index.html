@@ -11,10 +11,10 @@
     <style>
         body { background: #000; color: white; margin: 0; overflow: hidden; }
         .video-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
-        .video-card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; align-items: center; justify-content: center; }
+        .video-card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; align-items: center; justify-content: center; background: black; }
         video { width: 100%; height: 100%; object-fit: cover; }
-        .overlay { position: absolute; bottom: 80px; left: 15px; z-index: 10; }
-        .actions { position: absolute; right: 15px; bottom: 100px; display: flex; flex-col; gap: 20px; text-align: center; }
+        .overlay { position: absolute; bottom: 80px; left: 15px; z-index: 10; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .actions { position: absolute; right: 15px; bottom: 100px; display: flex; flex-direction: column; gap: 20px; text-align: center; }
     </style>
 </head>
 <body>
@@ -23,8 +23,8 @@
         <div class="video-card">
             <video loop autoplay muted playsinline src="VID_20251206_041026_071.mp4" onclick="this.muted=!this.muted"></video>
             <div class="overlay">
-                <h3 class="font-bold">@itz__alema__10k</h3>
-                <p id="videoTitle" class="text-sm">আমার প্রথম ভিডিও! #JhalokMasti</p>
+                <h3 class="font-bold text-lg">@itz__alema__10k</h3>
+                <p class="text-sm">আমার প্রথম ভিডিও! #JhalokMasti</p>
             </div>
             <div class="actions">
                 <div onclick="toggleLike(this)"><i class="fas fa-heart text-3xl"></i><p class="text-xs">লাইক</p></div>
@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    <div class="fixed bottom-0 w-full h-16 bg-black flex justify-around items-center border-t border-zinc-900">
+    <div class="fixed bottom-0 w-full h-16 bg-black flex justify-around items-center border-t border-zinc-900 z-50">
         <i class="fas fa-home text-2xl" onclick="location.reload()"></i>
         <label class="cursor-pointer">
             <i class="fas fa-plus-circle text-4xl text-red-500"></i>
@@ -44,6 +44,7 @@
     </div>
 
     <script>
+        // আপনার সঠিক Firebase কনফিগ
         const firebaseConfig = {
             apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh",
             authDomain: "jhalok-masti.firebaseapp.com",
@@ -59,7 +60,7 @@
             if (!user) { window.location.href = "login.html"; }
         });
 
-        // ভিডিও আপলোড করার সময় টাইটেল চাওয়ার অপশন
+        // ভিডিও আপলোড ও টাইটেল সেট করা
         function addVideo(input) {
             if (input.files[0]) {
                 const title = prompt("ভিডিওর জন্য একটি টাইটেল লিখুন:");
@@ -83,11 +84,16 @@
         }
 
         function toggleLike(btn) {
-            btn.querySelector('i').classList.toggle('text-red-500');
+            const heart = btn.querySelector('i');
+            heart.classList.toggle('text-red-500');
         }
 
         function shareApp() {
-            navigator.share({ title: 'Jhalok Masti', url: window.location.href });
+            if (navigator.share) {
+                navigator.share({ title: 'Jhalok Masti', url: window.location.href });
+            } else {
+                alert("আপনার ব্রাউজারে শেয়ার অপশন সাপোর্ট করছে না। লিঙ্ক কপি করুন।");
+            }
         }
     </script>
 </body>
