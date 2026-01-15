@@ -3,48 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti - Instagram Style</title>
+    <title>Jhalok Masti - Upload Story</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        .video-container { height: 100vh; width: 100vw; position: relative; background: #000; }
+        .video-container { height: 100vh; width: 100vw; position: relative; }
         video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
         
-        /* উপরের স্টোরি বার */
+        /* স্টোরি বার */
         .stories-bar {
             position: absolute; top: 40px; left: 0; width: 100%;
-            display: flex; padding: 10px; overflow-x: auto; z-index: 30; gap: 15px;
+            display: flex; padding: 10px; overflow-x: auto; z-index: 30; gap: 12px;
             background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
         }
-        .story-circle {
+        /* স্টোরি ছাড়ার বাটন স্টাইল */
+        .add-story {
             min-width: 65px; height: 65px; border-radius: 50%;
-            border: 3px solid #f09433; padding: 2px;
+            background: #333; display: flex; align-items: center; 
+            justify-content: center; border: 2px dashed #bbb; cursor: pointer;
+            position: relative;
         }
-        .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #000; }
+        .add-story i { color: white; font-size: 24px; }
+        .add-story span { position: absolute; bottom: -20px; color: white; font-size: 10px; width: 60px; text-align: center; }
 
-        /* ডান পাশের আইকন (Instagram style) */
-        .side-bar {
-            position: absolute; right: 10px; bottom: 100px;
-            display: flex; flex-direction: column; align-items: center; z-index: 20;
-        }
-        .side-icon { color: white; margin-bottom: 22px; cursor: pointer; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
-        .side-icon i { font-size: 30px; }
-        .side-icon span { font-size: 12px; font-weight: bold; margin-top: 4px; display: block; text-align: center; }
+        .story-circle { min-width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f09433; padding: 2px; }
+        .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
-        /* নিচে নেভিগেশন বার */
-        .bottom-nav {
-            position: absolute; bottom: 0; width: 100%; height: 60px;
-            background: #000; display: flex; justify-content: space-around;
-            align-items: center; z-index: 40; border-top: 0.5px solid #333;
-        }
-        .nav-item { color: white; font-size: 24px; cursor: pointer; }
+        /* হিডেন ফাইল ইনপুট */
+        #storyInput { display: none; }
 
-        /* ভিডিওর ওপরের টেক্সট */
-        .video-info {
-            position: absolute; bottom: 70px; left: 15px; z-index: 20; color: white;
-            pointer-events: none; width: 70%;
-        }
+        .side-bar { position: absolute; right: 10px; bottom: 100px; display: flex; flex-direction: column; align-items: center; z-index: 20; }
+        .side-icon { color: white; margin-bottom: 22px; cursor: pointer; text-align: center; }
+        .side-icon i { font-size: 28px; }
+        .side-icon span { font-size: 11px; display: block; }
     </style>
 </head>
 <body>
@@ -53,41 +45,27 @@
         <video id="mainVideo" playsinline autoplay muted src="VID_20251206_041026_071.mp4"></video>
 
         <div class="stories-bar" onclick="event.stopPropagation()">
-            <div class="story-circle"><img src="https://i.pravatar.cc/150?img=1" alt=""></div>
-            <div class="story-circle"><img src="https://i.pravatar.cc/150?img=2" alt=""></div>
-            <div class="story-circle"><img src="https://i.pravatar.cc/150?img=3" alt=""></div>
-            <div class="story-circle"><img src="https://i.pravatar.cc/150?img=4" alt=""></div>
+            <label for="storyInput" class="add-story">
+                <i class="fas fa-plus"></i>
+                <span>Your Story</span>
+            </label>
+            <input type="file" id="storyInput" accept="image/*" onchange="uploadStory(this)">
+
+            <div id="storyList" class="flex gap-3">
+                <div class="story-circle"><img src="https://i.pravatar.cc/150?img=11"></div>
+                <div class="story-circle"><img src="https://i.pravatar.cc/150?img=12"></div>
+            </div>
         </div>
         
         <div class="side-bar">
-            <div class="side-icon" onclick="event.stopPropagation(); alert('Liked!')">
-                <i class="far fa-heart"></i>
-                <span>45K</span>
-            </div>
-            <div class="side-icon" onclick="event.stopPropagation()">
-                <i class="far fa-comment"></i>
-                <span>1.2K</span>
-            </div>
-            <div class="side-icon" onclick="event.stopPropagation()">
-                <i class="far fa-paper-plane"></i>
-                <span>Share</span>
-            </div>
-            <div class="side-icon" onclick="event.stopPropagation()">
-                <i class="fas fa-ellipsis-h"></i>
-            </div>
+            <div class="side-icon" onclick="event.stopPropagation()"><i class="far fa-heart"></i><span>45K</span></div>
+            <div class="side-icon" onclick="event.stopPropagation()"><i class="far fa-comment"></i><span>1.2K</span></div>
+            <div class="side-icon" onclick="event.stopPropagation()"><i class="far fa-paper-plane"></i><span>Share</span></div>
         </div>
 
-        <div class="video-info">
-            <h3 class="font-bold mb-1">@Mozahar_Creator</h3>
-            <p class="text-sm">নতুন ভিডিও দেখতে স্ক্রিনে ক্লিক করুন! #JhalokMasti #Viral</p>
-        </div>
-
-        <div class="bottom-nav" onclick="event.stopPropagation()">
-            <div class="nav-item"><i class="fas fa-home"></i></div>
-            <div class="nav-item"><i class="fas fa-search"></i></div>
-            <div class="nav-item"><i class="far fa-plus-square"></i></div>
-            <div class="nav-item"><i class="far fa-play-circle"></i></div>
-            <div class="nav-item"><i class="far fa-user-circle"></i></div>
+        <div class="absolute bottom-[70px] left-4 text-white z-20 pointer-events-none">
+            <h3 class="font-bold">@Mozahar_Creator</h3>
+            <p class="text-sm">নতুন ভিডিও দেখতে ক্লিক করুন!</p>
         </div>
     </div>
 
@@ -101,6 +79,21 @@
             currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
             videoElement.src = videoList[currentVideoIndex];
             videoElement.play();
+        }
+
+        // স্টোরি আপলোড করার ফাংশন
+        function uploadStory(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const newStory = document.createElement('div');
+                    newStory.className = 'story-circle';
+                    newStory.innerHTML = `<img src="${e.target.result}">`;
+                    document.getElementById('storyList').prepend(newStory);
+                    alert("আপনার স্টোরি আপলোড হয়েছে!");
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         videoElement.onended = nextVideo;
