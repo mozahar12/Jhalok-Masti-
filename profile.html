@@ -7,34 +7,58 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #000; color: white; padding-bottom: 80px; }
-        .v-grid { aspect-ratio: 9/16; background: #111; border: 1px solid #222; overflow: hidden; }
+        body { background: #000; color: white; font-family: sans-serif; }
+        .grid-item { aspect-ratio: 1/1; background: #111; overflow: hidden; position: relative; }
+        .grid-item video { width: 100%; height: 100%; object-fit: cover; }
+        .active-tab { border-bottom: 2px solid white; color: white; }
     </style>
 </head>
 <body>
 
-    <div class="p-10 flex flex-col items-center">
-        <div class="w-24 h-24 rounded-full border-2 border-orange-500 p-1">
-            <img src="https://i.pravatar.cc/150?u=mozahar" class="w-full h-full rounded-full object-cover">
+    <div class="p-4">
+        <div class="flex items-center justify-between mb-6">
+            <i class="fas fa-chevron-left text-xl" onclick="location.href='index.html'"></i>
+            <h1 class="font-bold text-lg">itz__alema__10k <i class="fas fa-chevron-down text-xs"></i></h1>
+            <i class="fas fa-bars text-xl"></i>
         </div>
-        <h2 class="mt-4 font-bold text-xl">@Mozahar_Creator</h2>
-        <div class="flex gap-10 mt-6 text-center">
-            <div><p class="font-bold">2</p><p class="text-xs text-zinc-500">Post</p></div>
-            <div><p class="font-bold">45K</p><p class="text-xs text-zinc-500">Followers</p></div>
+
+        <div class="flex items-center gap-8 mb-4">
+            <div class="relative">
+                <img src="https://i.pravatar.cc/150?u=alema" class="w-24 h-24 rounded-full border-2 border-zinc-800 p-1">
+                <div class="absolute bottom-0 right-0 bg-blue-500 rounded-full w-6 h-6 flex items-center justify-center border-2 border-black">
+                    <i class="fas fa-plus text-[10px]"></i>
+                </div>
+            </div>
+            <div class="flex gap-6 text-center">
+                <div><p class="font-bold">18</p><p class="text-sm">Posts</p></div>
+                <div><p class="font-bold">767</p><p class="text-sm">Followers</p></div>
+                <div><p class="font-bold">1,410</p><p class="text-sm">Following</p></div>
+            </div>
         </div>
-        <button class="mt-6 bg-zinc-800 w-full py-2 rounded-lg font-bold">Edit Profile</button>
+
+        <div class="mb-4">
+            <p class="font-bold text-sm">alema khatun</p>
+            <p class="text-sm">"সব টুকু ভালোবাসা শুধু তোমার জন্য।" ❤️✨</p>
+            <p class="text-sm text-blue-400">@itz__alema__10k</p>
+        </div>
+
+        <div class="flex gap-2 mb-6">
+            <button class="flex-1 bg-zinc-800 py-2 rounded-lg font-bold text-sm">Edit profile</button>
+            <button class="flex-1 bg-zinc-800 py-2 rounded-lg font-bold text-sm">Share profile</button>
+        </div>
     </div>
 
-    <div class="grid grid-cols-3 gap-1 p-1">
-        <div class="v-grid" onclick="location.href='index.html'"><video src="VID_20251206_041026_071.mp4" class="w-full h-full object-cover"></video></div>
-        <div class="v-grid" onclick="location.href='index.html'"><video src="videos 22.mp4" class="w-full h-full object-cover"></video></div>
+    <div class="flex justify-around border-t border-zinc-900 text-zinc-500 text-xl py-2">
+        <i class="fas fa-grid-2 active-tab pb-2 px-10"></i>
+        <i class="fas fa-play px-10"></i>
+        <i class="fas fa-user-tag px-10"></i>
     </div>
 
-    <div class="fixed bottom-0 w-full h-16 bg-black flex justify-around items-center border-t border-zinc-900">
-        <i class="fas fa-home text-2xl text-zinc-500" onclick="location.href='index.html'"></i>
-        <i class="fas fa-search text-2xl text-zinc-500"></i>
-        <i class="far fa-plus-square text-2xl text-zinc-500"></i>
-        <i class="fas fa-user text-2xl text-white"></i>
+    <div class="grid grid-cols-3 gap-0.5">
+        <div class="grid-item"><video src="VID_20251206_041026_071.mp4"></video></div>
+        <div class="grid-item"><video src="videos 22.mp4"></video></div>
+        <div class="grid-item"><img src="https://picsum.photos/400/400?1" class="w-full h-full object-cover"></div>
+        <div class="grid-item"><img src="https://picsum.photos/400/400?2" class="w-full h-full object-cover"></div>
     </div>
 
 </body>
