@@ -9,7 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <style>
-        body { background: #000; color: white; margin: 0; overflow: hidden; }
+        body { background: #000; color: white; margin: 0; overflow: hidden; font-family: sans-serif; }
         .video-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
         .video-card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; align-items: center; justify-content: center; background: black; }
         video { width: 100%; height: 100%; object-fit: cover; }
@@ -23,28 +23,28 @@
         <div class="video-card">
             <video loop autoplay muted playsinline src="VID_20251206_041026_071.mp4" onclick="this.muted=!this.muted"></video>
             <div class="overlay">
-                <h3 class="font-bold text-lg">@itz__alema__10k</h3>
-                <p class="text-sm">আমার প্রথম ভিডিও! #JhalokMasti</p>
+                <h3 class="font-bold text-lg text-red-500">@JhalokMasti_User</h3>
+                <p id="videoTitle" class="text-sm">ঝলক মাস্তিতে স্বাগতম! 🔥 #JhalokMasti</p>
             </div>
             <div class="actions">
-                <div onclick="toggleLike(this)"><i class="fas fa-heart text-3xl"></i><p class="text-xs">লাইক</p></div>
-                <div onclick="alert('কমেন্ট বক্স শীঘ্রই আসছে!')"><i class="fas fa-comment text-3xl"></i><p class="text-xs">কমেন্ট</p></div>
-                <div onclick="shareApp()"><i class="fas fa-share text-3xl"></i><p class="text-xs">শেয়ার</p></div>
+                <div onclick="toggleLike(this)" class="cursor-pointer"><i class="fas fa-heart text-3xl"></i><p class="text-xs">লাইক</p></div>
+                <div onclick="alert('কমেন্ট বক্স শীঘ্রই আসছে!')" class="cursor-pointer"><i class="fas fa-comment text-3xl"></i><p class="text-xs">কমেন্ট</p></div>
+                <div onclick="shareApp()" class="cursor-pointer"><i class="fas fa-share text-3xl"></i><p class="text-xs">শেয়ার</p></div>
             </div>
         </div>
     </div>
 
     <div class="fixed bottom-0 w-full h-16 bg-black flex justify-around items-center border-t border-zinc-900 z-50">
-        <i class="fas fa-home text-2xl" onclick="location.reload()"></i>
+        <i class="fas fa-home text-2xl text-red-500" onclick="location.reload()"></i>
         <label class="cursor-pointer">
-            <i class="fas fa-plus-circle text-4xl text-red-500"></i>
+            <i class="fas fa-plus-circle text-4xl text-white"></i>
             <input type="file" accept="video/*" class="hidden" onchange="addVideo(this)">
         </label>
         <i class="fas fa-user text-2xl" onclick="location.href='profile.html'"></i>
     </div>
 
     <script>
-        // আপনার সঠিক Firebase কনফিগ
+        // আপনার সঠিক Firebase কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh",
             authDomain: "jhalok-masti.firebaseapp.com",
@@ -55,7 +55,7 @@
         };
         firebase.initializeApp(firebaseConfig);
 
-        // লগইন চেক (কেউ লগইন না করলে লগইন পেজে পাঠিয়ে দিবে)
+        // লগইন না থাকলে লগইন পেজে পাঠিয়ে দেবে
         firebase.auth().onAuthStateChanged((user) => {
             if (!user) { window.location.href = "login.html"; }
         });
@@ -63,7 +63,7 @@
         // ভিডিও আপলোড ও টাইটেল সেট করা
         function addVideo(input) {
             if (input.files[0]) {
-                const title = prompt("ভিডিওর জন্য একটি টাইটেল লিখুন:");
+                const title = prompt("আপনার ভিডিওর জন্য একটি টাইটেল লিখুন:");
                 if (title) {
                     const url = URL.createObjectURL(input.files[0]);
                     const feed = document.getElementById('feed');
@@ -71,11 +71,11 @@
                     newCard.className = 'video-card';
                     newCard.innerHTML = `
                         <video loop autoplay playsinline src="${url}"></video>
-                        <div class="overlay"><h3 class="font-bold">@আপনি</h3><p class="text-sm">${title}</p></div>
+                        <div class="overlay"><h3 class="font-bold text-red-500">@আপনি</h3><p class="text-sm">${title}</p></div>
                         <div class="actions">
-                            <div onclick="toggleLike(this)"><i class="fas fa-heart text-3xl"></i><p class="text-xs">0</p></div>
-                            <i class="fas fa-comment text-3xl"></i>
-                            <i class="fas fa-share text-3xl" onclick="shareApp()"></i>
+                            <div onclick="toggleLike(this)" class="cursor-pointer"><i class="fas fa-heart text-3xl"></i><p class="text-xs">0</p></div>
+                            <div class="cursor-pointer"><i class="fas fa-comment text-3xl"></i><p class="text-xs">0</p></div>
+                            <div onclick="shareApp()" class="cursor-pointer"><i class="fas fa-share text-3xl"></i><p class="text-xs">শেয়ার</p></div>
                         </div>`;
                     feed.prepend(newCard);
                     feed.scrollTop = 0;
@@ -92,7 +92,7 @@
             if (navigator.share) {
                 navigator.share({ title: 'Jhalok Masti', url: window.location.href });
             } else {
-                alert("আপনার ব্রাউজারে শেয়ার অপশন সাপোর্ট করছে না। লিঙ্ক কপি করুন।");
+                alert("আপনার ব্রাউজারে শেয়ার অপশন সাপোর্ট করছে না। লিঙ্ক কপি করে বন্ধুদের দিন!");
             }
         }
     </script>
