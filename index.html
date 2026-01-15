@@ -3,68 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti - আপনার নিজের ভিডিও!</title>
+    <title>Jhalok Masti - Playlist</title>
     <script src="https://cdn.tailwindcss.com"></script>
-            <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        .video-container { height: 100vh; width: 100vw; position: relative; background: #000; }
-        video { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-        }
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
+        .video-container { height: 100vh; width: 100vw; position: relative; }
+        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
         .overlay {
-            position: absolute; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%;
-            padding: 120px 20px 100px; 
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            z-index: 10;
-            color: white;
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 100px 20px 120px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            z-index: 10; pointer-events: none;
         }
     </style>
+</head>
+<body>
 
-    <div class="fixed top-6 left-0 w-full z-50 text-center pointer-events-none">
-        <h1 class="text-2xl font-black text-orange-500 italic tracking-tighter drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">JHALOK MASTI</h1>
-    </div>
-
-    <div class="video-container" onclick="togglePlay()">
-        <video id="mainVideo" loop playsinline autoplay muted
-               
-        src="VID_20251206_041026_071.mp4"
-
+    <div class="video-container" onclick="nextVideo()">
+        <video id="mainVideo" playsinline autoplay muted src="VID_20251206_041026_071.mp4"></video>
+        
         <div class="overlay">
-            <h3 class="font-bold text-lg text-white">@Mozahar_Creator</h3>
-            <p class="text-sm text-zinc-300 mt-1">আমার আপলোড করা প্রথম ভিডিও! 🔥 #JhalokMasti</p>
-        </div>
-
-        <div class="absolute bottom-40 right-4 flex flex-col gap-8 items-center">
-            <button onclick="event.stopPropagation(); alert('Liked!')" class="text-4xl">❤️</button>
-            <button onclick="event.stopPropagation(); alert('Comments coming soon!')" class="text-4xl">💬</button>
-            <button onclick="event.stopPropagation(); shareApp()" class="text-4xl">➡️</button>
+            <h1 class="text-orange-500 font-black italic mb-2">JHALOK MASTI</h1>
+            <h3 id="creatorName" class="font-bold text-white text-lg">@Mozahar_Creator</h3>
+            <p class="text-zinc-300 text-sm italic">পরবর্তী ভিডিও দেখতে স্ক্রিনে ক্লিক করুন!</p>
         </div>
     </div>
-
-    <nav class="fixed bottom-0 w-full p-6 bg-black/60 backdrop-blur-md flex justify-around border-t border-white/10">
-        <button class="text-orange-500 font-bold">Home</button>
-        <button class="text-zinc-400">Profile</button>
-    </nav>
 
     <script>
-        const video = document.getElementById('mainVideo');
-        function togglePlay() {
-            if (video.paused) { video.play(); video.muted = false; }
-            else { video.pause(); }
+        // এখানে আপনার আপলোড করা ভিডিওর তালিকা
+        const videoList = [
+            "VID_20251206_041026_071.mp4",
+            "videos 22.mp4" 
+        ];
+        
+        let currentVideoIndex = 0;
+        const videoElement = document.getElementById('mainVideo');
+
+        function nextVideo() {
+            // সাউন্ড আনমিউট করা
+            videoElement.muted = false;
+            
+            // ইনডেক্স পরিবর্তন করা
+            currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+            
+            // নতুন ভিডিও সোর্স সেট করা
+            videoElement.src = videoList[currentVideoIndex];
+            videoElement.play();
         }
-        function shareApp() {
-            if (navigator.share) {
-                navigator.share({ title: 'Jhalok Masti', url: window.location.href });
-            } else { alert('Link Copied!'); }
-        }
+        
+        // ভিডিও শেষ হলে অটোমেটিক পরেরটা চলবে
+        videoElement.onended = function() {
+            nextVideo();
+        };
     </script>
 </body>
 </html>
