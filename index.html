@@ -3,70 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti - Full Experience</title>
+    <title>Jhalok Masti - Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
         .app-container { height: 100vh; width: 100vw; position: relative; overflow: hidden; }
+        video { width: 100%; height: 100%; object-fit: cover; background: #000; }
         
-        /* ভিডিওর জন্য সোয়াইপ কন্টেইনার */
-        .video-wrapper { height: 100%; width: 100%; transition: transform 0.4s ease-out; }
-        video { width: 100%; height: 100vh; object-fit: cover; background: #000; }
-
-        /* স্টোরি দেখার মোডাল */
+        /* স্টোরি সেকশন */
+        .stories-bar {
+            position: absolute; top: 40px; left: 0; width: 100%;
+            display: flex; padding: 10px; overflow-x: auto; z-index: 30; gap: 12px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+        }
+        .story-circle { min-width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f09433; padding: 2px; cursor: pointer; }
+        .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        
         #storyViewer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 100; display: none; align-items: center; justify-content: center;
         }
-        #storyViewer img { max-width: 100%; max-height: 100%; border-radius: 10px; }
-
-        /* স্টোরি বার ডিজাইন */
-        .stories-bar {
-            position: absolute; top: 40px; left: 0; width: 100%;
-            display: flex; padding: 10px; overflow-x: auto; z-index: 30; gap: 12px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
-        }
-        .add-story { min-width: 65px; height: 65px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; border: 2px dashed #555; cursor: pointer; }
-        .story-circle { min-width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f09433; padding: 2px; cursor: pointer; }
-        .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-
-        .side-bar { position: absolute; right: 12px; bottom: 120px; display: flex; flex-direction: column; gap: 20px; z-index: 20; }
-        .side-icon { color: white; text-align: center; font-size: 28px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        .side-icon span { font-size: 12px; display: block; margin-top: 4px; }
     </style>
 </head>
 <body>
 
 <div class="app-container" id="swipeArea">
-    <div class="video-wrapper" id="videoWrapper">
-        <video id="mainVideo" playsinline loop src="VID_20251206_041026_071.mp4"></video>
-    </div>
+    <video id="mainVideo" playsinline loop src="VID_20251206_041026_071.mp4"></video>
 
-    <div id="storyViewer" onclick="closeStory()">
-        <img id="viewingImg" src="">
+    <div id="storyViewer" onclick="this.style.display='none'">
+        <img id="viewingImg" src="" style="max-width: 90%; max-height: 80%;">
     </div>
 
     <div class="stories-bar" onclick="event.stopPropagation()">
-        <label for="storyInput" class="add-story">
+        <label class="min-width-[65px] h-[65px] rounded-full bg-zinc-800 flex items-center justify-center border-2 border-dashed border-zinc-500 cursor-pointer p-6">
             <i class="fas fa-plus text-white"></i>
+            <input type="file" accept="image/*" class="hidden" onchange="handleUpload(this)">
         </label>
-        <input type="file" id="storyInput" accept="image/*" class="hidden" onchange="uploadStory(this)">
-        <div id="storyList" class="flex gap-3">
-            <div class="story-circle" onclick="viewStory('https://i.pravatar.cc/150?img=11')"><img src="https://i.pravatar.cc/150?img=11"></div>
-            <div class="story-circle" onclick="viewStory('https://i.pravatar.cc/150?img=12')"><img src="https://i.pravatar.cc/150?img=12"></div>
-        </div>
+        <div id="storyList" class="flex gap-3"></div>
     </div>
 
-    <div class="side-bar">
-        <div class="side-icon"><i class="fas fa-heart"></i><span>45K</span></div>
-        <div class="side-icon"><i class="fas fa-comment-dots"></i><span>1.2K</span></div>
-        <div class="side-icon"><i class="fas fa-share"></i><span>Share</span></div>
-    </div>
-
-    <div class="absolute bottom-20 left-4 text-white z-10 pointer-events-none">
-        <h3 class="font-bold text-lg">@Mozahar_Creator</h3>
-        <p class="text-sm opacity-90">সোয়াইপ করে অন্য ভিডিও দেখুন! 🎬</p>
+    <div class="absolute bottom-24 right-4 flex flex-col gap-6 text-white z-20">
+        <div class="text-center"><i class="fas fa-heart text-3xl"></i><p class="text-xs">45K</p></div>
+        <div class="text-center"><i class="fas fa-comment-dots text-3xl"></i><p class="text-xs">1.2K</p></div>
     </div>
 </div>
 
@@ -76,52 +55,55 @@
     const videoElement = document.getElementById('mainVideo');
     let startY = 0;
 
-    // ১. সোয়াইপ আপ সুবিধা (Swipe Up to change video)
+    // ১. সোয়াইপ ও সাউন্ড কন্ট্রোল
     document.getElementById('swipeArea').addEventListener('touchstart', e => startY = e.touches[0].clientY);
     document.getElementById('swipeArea').addEventListener('touchend', e => {
         let endY = e.changedTouches[0].clientY;
-        if (startY - endY > 50) changeVideo(1); // সোয়াইপ আপ
-        else if (endY - startY > 50) changeVideo(-1); // সোয়াইপ ডাউন
+        if (startY - endY > 50) { // Swipe Up
+            currentIdx = (currentIdx + 1) % videoList.length;
+            videoElement.src = videoList[currentIdx];
+            videoElement.muted = false; // সাউন্ড সচল করার চেষ্টা
+            videoElement.play();
+        }
     });
 
-    function changeVideo(direction) {
-        currentIdx = (currentIdx + direction + videoList.length) % videoList.length;
-        videoElement.src = videoList[currentIdx];
-        videoElement.muted = false; // সাউন্ড অটো চালু হবে
-        videoElement.play();
+    // ২. স্টোরি স্থায়ীভাবে সেভ করা (LocalStorage)
+    function saveStory(base64Str) {
+        let stories = JSON.parse(localStorage.getItem('myStories') || '[]');
+        stories.push(base64Str);
+        localStorage.setItem('myStories', JSON.stringify(stories));
+        renderStories();
     }
 
-    // ২. স্টোরি দেখা ও আপলোড
-    function uploadStory(input) {
+    function renderStories() {
+        let stories = JSON.parse(localStorage.getItem('myStories') || '[]');
+        const list = document.getElementById('storyList');
+        list.innerHTML = '';
+        stories.forEach(src => {
+            const div = document.createElement('div');
+            div.className = 'story-circle';
+            div.onclick = () => {
+                document.getElementById('viewingImg').src = src;
+                document.getElementById('storyViewer').style.display = 'flex';
+            };
+            div.innerHTML = `<img src="${src}">`;
+            list.appendChild(div);
+        });
+    }
+
+    function handleUpload(input) {
         if (input.files && input.files[0]) {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const newStory = document.createElement('div');
-                newStory.className = 'story-circle';
-                newStory.onclick = () => viewStory(e.target.result);
-                newStory.innerHTML = `<img src="${e.target.result}">`;
-                document.getElementById('storyList').prepend(newStory);
-            };
+            reader.onload = e => saveStory(e.target.result);
             reader.readAsDataURL(input.files[0]);
         }
     }
 
-    function viewStory(src) {
-        document.getElementById('viewingImg').src = src;
-        document.getElementById('storyViewer').style.display = 'flex';
-    }
+    // পেজ লোড হলে পুরোনো স্টোরি দেখানো
+    window.onload = renderStories;
 
-    function closeStory() {
-        document.getElementById('storyViewer').style.display = 'none';
-    }
-
-    // স্ক্রিনে প্রথমবার টাচ করলেই মিউজিক চালু হবে
-    document.body.addEventListener('click', () => {
-        if (videoElement.paused) {
-            videoElement.play();
-            videoElement.muted = false;
-        }
-    }, {once: true});
+    // প্রথম ক্লিকে সাউন্ড চালু
+    document.body.onclick = () => { videoElement.muted = false; videoElement.play(); };
 </script>
 </body>
 </html>
