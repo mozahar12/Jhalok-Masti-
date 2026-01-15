@@ -3,122 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti</title>
+    <title>Jhalok Masti - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        .feed-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; }
-        .feed-container::-webkit-scrollbar { display: none; }
-        .video-page { height: 100vh; width: 100vw; scroll-snap-align: start; position: relative; }
+        body { background: #000; color: white; margin: 0; overflow: hidden; }
+        .video-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
+        .video-card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; align-items: center; justify-content: center; }
         video { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* Story Bar */
-        .story-bar { position: fixed; top: 40px; left: 0; width: 100%; z-index: 50; display: flex; gap: 12px; padding: 10px; overflow-x: auto; background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent); scrollbar-width: none; }
-        .story-circle { min-width: 65px; height: 65px; border-radius: 50%; border: 2.5px solid #f09433; padding: 2px; flex-shrink: 0; cursor: pointer; }
-        .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-
-        /* UI Overlay */
-        .ui-layer { position: absolute; bottom: 80px; left: 0; width: 100%; padding: 15px; color: white; z-index: 10; pointer-events: none; }
-        .clickable { pointer-events: auto; }
-        
-        /* Story Viewer Modal */
-        #storyViewer { display: none; position: fixed; inset: 0; background: black; z-index: 100; }
+        .overlay { position: absolute; bottom: 80px; left: 15px; z-index: 10; }
+        .actions { position: absolute; right: 15px; bottom: 100px; display: flex; flex-col; gap: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div id="storyViewer" class="flex items-center justify-center">
-        <i class="fas fa-times absolute top-10 right-5 text-white text-3xl z-[110]" onclick="closeStory()"></i>
-        <img id="viewImg" class="max-h-screen object-contain">
-    </div>
-
-    <div class="story-bar clickable">
-        <label class="min-w-[65px] h-[65px] rounded-full bg-zinc-800 flex items-center justify-center border-2 border-dashed border-zinc-500 cursor-pointer">
-            <i class="fas fa-plus text-white text-xl"></i>
-            <input type="file" accept="image/*" class="hidden" onchange="uploadStory(this)">
-        </label>
-        <div id="storyList" class="flex gap-3"></div>
-    </div>
-
-    <div class="feed-container" id="feedContainer">
-        <div class="video-page">
+    <div class="video-container" id="feed">
+        <div class="video-card">
             <video loop autoplay muted playsinline src="VID_20251206_041026_071.mp4" onclick="this.muted=!this.muted"></video>
-            <div class="ui-layer">
-                <div class="clickable mb-4">
-                    <h3 class="font-bold text-lg">@Mozahar_Creator</h3>
-                    <p class="text-sm">Welcome to Jhalok Masti! ❤️✨ #Trending</p>
-                </div>
-                <div class="absolute right-4 bottom-20 flex flex-col gap-6 text-center clickable">
-                    <div onclick="this.querySelector('i').classList.toggle('text-red-500')"><i class="fas fa-heart text-3xl"></i><p class="text-xs">45K</p></div>
-                    <div onclick="alert('Comment box coming soon!')"><i class="fas fa-comment-dots text-3xl"></i><p class="text-xs">1.2K</p></div>
-                    <div onclick="alert('Share Link Copied!')"><i class="fas fa-share text-3xl"></i><p class="text-xs">Share</p></div>
-                </div>
+            <div class="overlay">
+                <h3 class="font-bold">@itz__alema__10k</h3>
+                <p id="videoTitle" class="text-sm">আমার প্রথম ভিডিও! #JhalokMasti</p>
+            </div>
+            <div class="actions">
+                <div onclick="toggleLike(this)"><i class="fas fa-heart text-3xl"></i><p class="text-xs">লাইক</p></div>
+                <div onclick="alert('কমেন্ট বক্স শীঘ্রই আসছে!')"><i class="fas fa-comment text-3xl"></i><p class="text-xs">কমেন্ট</p></div>
+                <div onclick="shareApp()"><i class="fas fa-share text-3xl"></i><p class="text-xs">শেয়ার</p></div>
             </div>
         </div>
     </div>
 
-    <div class="fixed bottom-0 w-full h-16 bg-black flex justify-around items-center border-t border-zinc-900 z-50">
-        <i class="fas fa-home text-2xl text-white" onclick="location.reload()"></i>
-        <i class="fas fa-search text-2xl text-zinc-500"></i>
-        <label class="clickable cursor-pointer">
-            <i class="far fa-plus-square text-3xl text-white"></i>
-            <input type="file" accept="video/*" class="hidden" onchange="promptUpload(this)">
+    <div class="fixed bottom-0 w-full h-16 bg-black flex justify-around items-center border-t border-zinc-900">
+        <i class="fas fa-home text-2xl" onclick="location.reload()"></i>
+        <label class="cursor-pointer">
+            <i class="fas fa-plus-circle text-4xl text-red-500"></i>
+            <input type="file" accept="video/*" class="hidden" onchange="addVideo(this)">
         </label>
-        <i class="far fa-heart text-2xl text-zinc-500"></i>
-        <img src="https://i.pravatar.cc/150?u=mozahar" class="w-8 h-8 rounded-full border border-white clickable" onclick="location.href='profile.html'">
+        <i class="fas fa-user text-2xl" onclick="location.href='profile.html'"></i>
     </div>
 
     <script>
-        // স্টোরি দেখা ও আপলোড
-        function uploadStory(input) {
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh",
+            authDomain: "jhalok-masti.firebaseapp.com",
+            projectId: "jhalok-masti",
+            storageBucket: "jhalok-masti.firebasestorage.app",
+            messagingSenderId: "765019855310",
+            appId: "1:765019855310:web:036371e3a39b6895d"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // লগইন চেক (কেউ লগইন না করলে লগইন পেজে পাঠিয়ে দিবে)
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) { window.location.href = "login.html"; }
+        });
+
+        // ভিডিও আপলোড করার সময় টাইটেল চাওয়ার অপশন
+        function addVideo(input) {
             if (input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    let stories = JSON.parse(localStorage.getItem('stList') || '[]');
-                    stories.unshift(e.target.result);
-                    localStorage.setItem('stList', JSON.stringify(stories));
-                    renderStories();
-                };
-                reader.readAsDataURL(input.files[0]);
+                const title = prompt("ভিডিওর জন্য একটি টাইটেল লিখুন:");
+                if (title) {
+                    const url = URL.createObjectURL(input.files[0]);
+                    const feed = document.getElementById('feed');
+                    const newCard = document.createElement('div');
+                    newCard.className = 'video-card';
+                    newCard.innerHTML = `
+                        <video loop autoplay playsinline src="${url}"></video>
+                        <div class="overlay"><h3 class="font-bold">@আপনি</h3><p class="text-sm">${title}</p></div>
+                        <div class="actions">
+                            <div onclick="toggleLike(this)"><i class="fas fa-heart text-3xl"></i><p class="text-xs">0</p></div>
+                            <i class="fas fa-comment text-3xl"></i>
+                            <i class="fas fa-share text-3xl" onclick="shareApp()"></i>
+                        </div>`;
+                    feed.prepend(newCard);
+                    feed.scrollTop = 0;
+                }
             }
         }
-        function renderStories() {
-            const list = JSON.parse(localStorage.getItem('stList') || '[]');
-            document.getElementById('storyList').innerHTML = list.map(src => `
-                <div class="story-circle" onclick="openStory('${src}')"><img src="${src}"></div>
-            `).join('');
-        }
-        function openStory(src) { document.getElementById('viewImg').src = src; document.getElementById('storyViewer').style.display = 'flex'; }
-        function closeStory() { document.getElementById('storyViewer').style.display = 'none'; }
 
-        // ভিডিও আপলোড (টাইটেল সহ)
-        function promptUpload(input) {
-            if (input.files[0]) {
-                const title = prompt("ভিডিওর জন্য একটি টাইটেল লিখুন:", "Cool Video! #JhalokMasti");
-                if (title != null) { uploadVideo(input, title); }
-            }
-        }
-        function uploadVideo(input, title) {
-            const url = URL.createObjectURL(input.files[0]);
-            const container = document.getElementById('feedContainer');
-            const newVid = document.createElement('div');
-            newVid.className = 'video-page';
-            newVid.innerHTML = `
-                <video loop autoplay playsinline src="${url}" onclick="this.muted=!this.muted"></video>
-                <div class="ui-layer">
-                    <div class="clickable mb-4"><h3 class="font-bold">@Me</h3><p class="text-sm">${title}</p></div>
-                    <div class="absolute right-4 bottom-20 flex flex-col gap-6 text-center clickable">
-                        <div><i class="fas fa-heart text-3xl"></i><p class="text-xs">0</p></div>
-                        <div><i class="fas fa-comment-dots text-3xl"></i><p class="text-xs">0</p></div>
-                        <div><i class="fas fa-share text-3xl"></i><p class="text-xs">Share</p></div>
-                    </div>
-                </div>`;
-            container.prepend(newVid);
-            container.scrollTop = 0;
+        function toggleLike(btn) {
+            btn.querySelector('i').classList.toggle('text-red-500');
         }
 
-        window.onload = renderStories;
+        function shareApp() {
+            navigator.share({ title: 'Jhalok Masti', url: window.location.href });
+        }
     </script>
 </body>
 </html>
