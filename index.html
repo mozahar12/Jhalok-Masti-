@@ -3,58 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti - Home</title>
+    <title>Jhalok Masti</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        .main-view { position: relative; height: 100vh; width: 100vw; }
+        .video-container { position: relative; height: 100vh; width: 100vw; }
         video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
-        .clickable { pointer-events: auto; }
         
-        /* স্টোরি সেকশন */
-        .stories { position: absolute; top: 40px; left: 0; width: 100%; display: flex; padding: 10px; overflow-x: auto; gap: 12px; z-index: 20; }
-        .story-item { min-width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f09433; padding: 2px; }
-        .story-item img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        /* UI Layer */
+        .content-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
+        .interactive { pointer-events: auto; }
 
-        .nav-bar { position: absolute; bottom: 0; width: 100%; height: 70px; background: rgba(0,0,0,0.9); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; z-index: 30; }
+        /* Navigation Bar */
+        .nav-bar { position: absolute; bottom: 0; width: 100%; height: 70px; background: rgba(0,0,0,0.85); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; }
     </style>
 </head>
 <body>
 
-<div class="main-view">
-    <video id="v" playsinline loop autoplay muted src="VID_20251206_041026_071.mp4" onclick="this.muted=false; this.play()"></video>
+<div class="video-container">
+    <video id="mainVid" playsinline loop autoplay muted src="VID_20251206_041026_071.mp4" onclick="this.muted=false; this.play()"></video>
 
-    <div class="overlay">
-        <div class="stories clickable">
-            <label class="min-w-[65px] h-[65px] rounded-full bg-zinc-800 flex items-center justify-center border-2 border-dashed border-zinc-500 cursor-pointer">
+    <div class="content-overlay">
+        <div class="absolute top-10 left-0 w-full flex p-4 gap-3 overflow-x-auto interactive">
+            <label class="min-w-[60px] h-[60px] rounded-full bg-zinc-800 flex items-center justify-center border-2 border-dashed border-zinc-500 cursor-pointer">
                 <i class="fas fa-plus text-white"></i>
-                <input type="file" accept="image/*" class="hidden" onchange="up(this)">
+                <input type="file" accept="image/*" class="hidden" onchange="addStory(this)">
             </label>
-            <div id="sList" class="flex gap-3"></div>
+            <div id="storyContainer" class="flex gap-3"></div>
         </div>
 
-        <div class="absolute right-4 bottom-32 flex flex-col gap-6 text-white text-center clickable">
+        <div class="absolute right-4 bottom-32 flex flex-col gap-6 text-white text-center interactive">
             <div><i class="fas fa-heart text-3xl text-red-500"></i><p class="text-xs">45K</p></div>
             <div><i class="fas fa-comment-dots text-3xl"></i><p class="text-xs">1.2K</p></div>
             <div><i class="fas fa-share text-3xl"></i><p class="text-xs">Share</p></div>
         </div>
 
-        <div class="nav-bar clickable text-zinc-500">
+        <div class="nav-bar interactive">
             <i class="fas fa-home text-2xl text-white"></i>
-            <i class="fas fa-search text-2xl"></i>
-            <i class="far fa-plus-square text-3xl"></i>
-            <i class="far fa-user-circle text-2xl cursor-pointer" onclick="location.href='profile.html'"></i>
+            <i class="fas fa-search text-2xl text-zinc-500"></i>
+            <i class="far fa-plus-square text-3xl text-zinc-500"></i>
+            <i class="far fa-user-circle text-2xl text-zinc-500" onclick="location.href='profile.html'"></i>
         </div>
     </div>
 </div>
 
 <script>
-    function up(i){ if(i.files[0]){ let r=new FileReader(); r.onload=e=>{ let s=JSON.parse(localStorage.getItem('st')||'[]'); s.unshift(e.target.result); localStorage.setItem('st',JSON.stringify(s)); ld(); }; r.readAsDataURL(i.files[0]); } }
-    function ld(){ let s=JSON.parse(localStorage.getItem('st')||'[]'); document.getElementById('sList').innerHTML=s.map(x=>`<div class="story-item"><img src="${x}"></div>`).join(''); }
-    window.onload=ld;
-    document.body.onclick=()=>{ let v=document.getElementById('v'); v.muted=false; v.play(); };
+    function addStory(input) {
+        if (input.files[0]) {
+            const r = new FileReader();
+            r.onload = e => {
+                let s = JSON.parse(localStorage.getItem('mySt') || '[]');
+                s.unshift(e.target.result);
+                localStorage.setItem('mySt', JSON.stringify(s));
+                showSt();
+            };
+            r.readAsDataURL(input.files[0]);
+        }
+    }
+    function showSt() {
+        const s = JSON.parse(localStorage.getItem('mySt') || '[]');
+        document.getElementById('storyContainer').innerHTML = s.map(img => `
+            <div class="min-w-[60px] h-[60px] rounded-full border-2 border-orange-500 p-0.5">
+                <img src="${img}" class="w-full h-full rounded-full object-cover">
+            </div>
+        `).join('');
+    }
+    window.onload = showSt;
+    document.body.onclick = () => { document.getElementById('mainVid').muted = false; };
 </script>
 </body>
 </html>
