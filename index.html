@@ -3,33 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti - Playlist</title>
+    <title>Jhalok Masti - Full App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
         .video-container { height: 100vh; width: 100vw; position: relative; }
         video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        
+        /* রাইট সাইড বাটন (Like, Comment, Share) */
+        .side-bar {
+            position: absolute; right: 15px; bottom: 120px;
+            display: flex; flex-direction: column; align-items: center; z-index: 20;
+        }
+        .side-icon { color: white; margin-bottom: 20px; text-align: center; cursor: pointer; }
+        .side-icon i { font-size: 28px; display: block; }
+        .side-icon span { font-size: 12px; margin-top: 4px; }
+
+        /* নিচের টেক্সট এরিয়া */
         .overlay {
             position: absolute; bottom: 0; left: 0; width: 100%;
-            padding: 100px 20px 120px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 100px 20px 40px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
             z-index: 10; pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="video-container" onclick="nextVideo()">
+    <div class="video-container" onclick="handleTap()">
         <video id="mainVideo" playsinline autoplay muted src="VID_20251206_041026_071.mp4"></video>
         
+        <div class="side-bar">
+            <div class="side-icon" onclick="event.stopPropagation(); alert('Liked!')">
+                <i class="fas fa-heart text-red-500"></i>
+                <span>1.2K</span>
+            </div>
+            <div class="side-icon" onclick="event.stopPropagation(); alert('Comments are coming soon!')">
+                <i class="fas fa-comment-dots"></i>
+                <span>450</span>
+            </div>
+            <div class="side-icon" onclick="event.stopPropagation(); alert('Link Copied!')">
+                <i class="fas fa-share"></i>
+                <span>Share</span>
+            </div>
+        </div>
+
         <div class="overlay">
-            <h1 class="text-orange-500 font-black italic mb-2">JHALOK MASTI</h1>
-            <h3 id="creatorName" class="font-bold text-white text-lg">@Mozahar_Creator</h3>
-            <p class="text-zinc-300 text-sm italic">পরবর্তী ভিডিও দেখতে স্ক্রিনে ক্লিক করুন!</p>
+            <h1 class="text-orange-500 font-black italic mb-1 text-xl">JHALOK MASTI</h1>
+            <h3 class="font-bold text-white text-lg">@Mozahar_Creator</h3>
+            <p class="text-zinc-300 text-sm">পরবর্তী ভিডিও দেখতে স্ক্রিনে ক্লিক করুন!</p>
         </div>
     </div>
 
     <script>
-        // এখানে আপনার আপলোড করা ভিডিওর তালিকা
         const videoList = [
             "VID_20251206_041026_071.mp4",
             "videos 22.mp4" 
@@ -38,21 +64,15 @@
         let currentVideoIndex = 0;
         const videoElement = document.getElementById('mainVideo');
 
-        function nextVideo() {
-            // সাউন্ড আনমিউট করা
-            videoElement.muted = false;
-            
-            // ইনডেক্স পরিবর্তন করা
+        function handleTap() {
+            videoElement.muted = false; // সাউন্ড চালু হবে
             currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
-            
-            // নতুন ভিডিও সোর্স সেট করা
             videoElement.src = videoList[currentVideoIndex];
             videoElement.play();
         }
-        
-        // ভিডিও শেষ হলে অটোমেটিক পরেরটা চলবে
+
         videoElement.onended = function() {
-            nextVideo();
+            handleTap();
         };
     </script>
 </body>
