@@ -8,69 +8,73 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        .video-container { position: relative; height: 100vh; width: 100vw; }
+        .main-wrapper { position: relative; height: 100vh; width: 100vw; }
         video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
         
         /* UI Layer */
-        .content-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
-        .interactive { pointer-events: auto; }
+        .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; }
+        .clickable { pointer-events: auto; }
 
-        /* Navigation Bar */
-        .nav-bar { position: absolute; bottom: 0; width: 100%; height: 70px; background: rgba(0,0,0,0.85); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; }
+        /* Story Section */
+        .story-section { display: flex; padding: 10px; gap: 10px; margin-top: 40px; overflow-x: auto; }
+        .add-story { min-width: 60px; height: 60px; border-radius: 50%; border: 2px dashed #fff; display: flex; items-center; justify-content: center; background: rgba(255,255,255,0.1); }
+        .story-img { min-width: 60px; height: 60px; border-radius: 50%; border: 2px solid #f09433; padding: 2px; }
+
+        /* Navigation */
+        .bottom-nav { height: 70px; background: rgba(0,0,0,0.9); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
+        .side-icons { position: absolute; right: 15px; bottom: 120px; display: flex; flex-direction: column; gap: 20px; color: white; text-align: center; }
     </style>
 </head>
 <body>
 
-<div class="video-container">
-    <video id="mainVid" playsinline loop autoplay muted src="VID_20251206_041026_071.mp4" onclick="this.muted=false; this.play()"></video>
+<div class="main-wrapper">
+    <video id="myVid" playsinline loop autoplay muted src="VID_20251206_041026_071.mp4" onclick="this.muted=false; this.play()"></video>
 
-    <div class="content-overlay">
-        <div class="absolute top-10 left-0 w-full flex p-4 gap-3 overflow-x-auto interactive">
-            <label class="min-w-[60px] h-[60px] rounded-full bg-zinc-800 flex items-center justify-center border-2 border-dashed border-zinc-500 cursor-pointer">
-                <i class="fas fa-plus text-white"></i>
-                <input type="file" accept="image/*" class="hidden" onchange="addStory(this)">
+    <div class="ui-layer">
+        <div class="story-section clickable">
+            <label class="add-story cursor-pointer">
+                <i class="fas fa-plus text-white text-xl"></i>
+                <input type="file" accept="image/*" class="hidden" onchange="uploadStory(this)">
             </label>
-            <div id="storyContainer" class="flex gap-3"></div>
+            <div id="storyDisplay" class="flex gap-3"></div>
         </div>
 
-        <div class="absolute right-4 bottom-32 flex flex-col gap-6 text-white text-center interactive">
+        <div class="side-icons clickable">
             <div><i class="fas fa-heart text-3xl text-red-500"></i><p class="text-xs">45K</p></div>
             <div><i class="fas fa-comment-dots text-3xl"></i><p class="text-xs">1.2K</p></div>
-            <div><i class="fas fa-share text-3xl"></i><p class="text-xs">Share</p></div>
+            <div onclick="location.href='profile.html'"><i class="fas fa-user-circle text-3xl"></i><p class="text-xs">Profile</p></div>
         </div>
 
-        <div class="nav-bar interactive">
+        <div class="bottom-nav clickable">
             <i class="fas fa-home text-2xl text-white"></i>
-            <i class="fas fa-search text-2xl text-zinc-500"></i>
-            <i class="far fa-plus-square text-3xl text-zinc-500"></i>
-            <i class="far fa-user-circle text-2xl text-zinc-500" onclick="location.href='profile.html'"></i>
+            <i class="fas fa-search text-2xl text-zinc-600"></i>
+            <i class="far fa-plus-square text-3xl text-zinc-600"></i>
+            <i class="far fa-user-circle text-2xl text-zinc-600" onclick="location.href='profile.html'"></i>
         </div>
     </div>
 </div>
 
 <script>
-    function addStory(input) {
+    function uploadStory(input) {
         if (input.files[0]) {
-            const r = new FileReader();
-            r.onload = e => {
-                let s = JSON.parse(localStorage.getItem('mySt') || '[]');
-                s.unshift(e.target.result);
-                localStorage.setItem('mySt', JSON.stringify(s));
-                showSt();
+            const reader = new FileReader();
+            reader.onload = e => {
+                let stories = JSON.parse(localStorage.getItem('userSt') || '[]');
+                stories.unshift(e.target.result);
+                localStorage.setItem('userSt', JSON.stringify(stories));
+                loadStories();
             };
-            r.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(input.files[0]);
         }
     }
-    function showSt() {
-        const s = JSON.parse(localStorage.getItem('mySt') || '[]');
-        document.getElementById('storyContainer').innerHTML = s.map(img => `
-            <div class="min-w-[60px] h-[60px] rounded-full border-2 border-orange-500 p-0.5">
-                <img src="${img}" class="w-full h-full rounded-full object-cover">
-            </div>
+    function loadStories() {
+        const list = JSON.parse(localStorage.getItem('userSt') || '[]');
+        document.getElementById('storyDisplay').innerHTML = list.map(src => `
+            <img src="${src}" class="story-img object-cover">
         `).join('');
     }
-    window.onload = showSt;
-    document.body.onclick = () => { document.getElementById('mainVid').muted = false; };
+    window.onload = loadStories;
+    document.body.onclick = () => { document.getElementById('myVid').muted = false; };
 </script>
 </body>
 </html>
