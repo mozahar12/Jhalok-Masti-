@@ -3,78 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti</title>
+    <title>Jhalok Masti - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        .main-wrapper { position: relative; height: 100vh; width: 100vw; }
-        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
         
-        /* UI Layer */
-        .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; }
-        .clickable { pointer-events: auto; }
+        /* ভিডিও ব্যাকগ্রাউন্ড */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
 
-        /* Story Section */
-        .story-section { display: flex; padding: 10px; gap: 10px; margin-top: 40px; overflow-x: auto; }
-        .add-story { min-width: 60px; height: 60px; border-radius: 50%; border: 2px dashed #fff; display: flex; items-center; justify-content: center; background: rgba(255,255,255,0.1); }
-        .story-img { min-width: 60px; height: 60px; border-radius: 50%; border: 2px solid #f09433; padding: 2px; }
+        /* ইন্টারফেস লেয়ার (ভিডিওর ওপরে থাকবে) */
+        .interface-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none; /* যাতে ভিডিও ক্লিক করা যায় */
+        }
 
-        /* Navigation */
-        .bottom-nav { height: 70px; background: rgba(0,0,0,0.9); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
-        .side-icons { position: absolute; right: 15px; bottom: 120px; display: flex; flex-direction: column; gap: 20px; color: white; text-align: center; }
+        .allow-click { pointer-events: auto; cursor: pointer; }
+
+        /* নিচের মেনু বার */
+        .footer-nav {
+            background: rgba(0,0,0,0.85);
+            height: 70px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #333;
+        }
     </style>
 </head>
 <body>
 
-<div class="main-wrapper">
-    <video id="myVid" playsinline loop autoplay muted src="VID_20251206_041026_071.mp4" onclick="this.muted=false; this.play()"></video>
+    <video class="video-bg" id="homeVideo" playsinline loop autoplay muted src="VID_20251206_041026_071.mp4" onclick="this.muted=false; this.play()"></video>
 
-    <div class="ui-layer">
-        <div class="story-section clickable">
-            <label class="add-story cursor-pointer">
+    <div class="interface-layer">
+        
+        <div class="p-4 mt-8 allow-click">
+            <div class="w-14 h-14 rounded-full border-2 border-dashed border-white flex items-center justify-center bg-black/20">
                 <i class="fas fa-plus text-white text-xl"></i>
-                <input type="file" accept="image/*" class="hidden" onchange="uploadStory(this)">
-            </label>
-            <div id="storyDisplay" class="flex gap-3"></div>
+            </div>
         </div>
 
-        <div class="side-icons clickable">
+        <div class="absolute right-4 bottom-32 flex flex-col gap-6 text-white text-center allow-click">
             <div><i class="fas fa-heart text-3xl text-red-500"></i><p class="text-xs">45K</p></div>
             <div><i class="fas fa-comment-dots text-3xl"></i><p class="text-xs">1.2K</p></div>
-            <div onclick="location.href='profile.html'"><i class="fas fa-user-circle text-3xl"></i><p class="text-xs">Profile</p></div>
+            <div onclick="window.location.href='profile.html'">
+                <i class="fas fa-user-circle text-3xl"></i>
+                <p class="text-xs">Profile</p>
+            </div>
         </div>
 
-        <div class="bottom-nav clickable">
+        <div class="footer-nav allow-click">
             <i class="fas fa-home text-2xl text-white"></i>
-            <i class="fas fa-search text-2xl text-zinc-600"></i>
-            <i class="far fa-plus-square text-3xl text-zinc-600"></i>
-            <i class="far fa-user-circle text-2xl text-zinc-600" onclick="location.href='profile.html'"></i>
+            <i class="fas fa-search text-2xl text-zinc-500"></i>
+            <i class="far fa-plus-square text-3xl text-zinc-500"></i>
+            <div onclick="window.location.href='profile.html'" class="flex flex-col items-center">
+                <i class="far fa-user-circle text-2xl text-zinc-500"></i>
+                <p class="text-[10px] text-zinc-500">Profile</p>
+            </div>
         </div>
-    </div>
-</div>
 
-<script>
-    function uploadStory(input) {
-        if (input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                let stories = JSON.parse(localStorage.getItem('userSt') || '[]');
-                stories.unshift(e.target.result);
-                localStorage.setItem('userSt', JSON.stringify(stories));
-                loadStories();
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    function loadStories() {
-        const list = JSON.parse(localStorage.getItem('userSt') || '[]');
-        document.getElementById('storyDisplay').innerHTML = list.map(src => `
-            <img src="${src}" class="story-img object-cover">
-        `).join('');
-    }
-    window.onload = loadStories;
-    document.body.onclick = () => { document.getElementById('myVid').muted = false; };
-</script>
+    </div>
+
+    <script>
+        // ভিডিওতে একবার টাচ করলে সাউন্ড চালু হবে
+        document.body.addEventListener('click', function() {
+            const v = document.getElementById('homeVideo');
+            v.muted = false;
+            v.play();
+        }, {once: true});
+    </script>
+
 </body>
 </html>
