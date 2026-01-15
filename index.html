@@ -3,78 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti - Reels</title>
+    <title>Jhalok Masti - Full Swipe</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        .video-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
-        .video-section { height: 100vh; width: 100vw; scroll-snap-align: start; position: relative; }
-        video { width: 100%; height: 100%; object-fit: cover; }
-        .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; }
+        
+        /* সোয়াইপ কন্টেইনার */
+        .main-swipe-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+        }
+        .main-swipe-container::-webkit-scrollbar { display: none; }
+
+        .snap-page {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            position: relative;
+            background: #000;
+        }
+
+        img, video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ইউজার ইন্টারফেস লেয়ার */
+        .ui-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 10;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
         .clickable { pointer-events: auto; }
-        #commentPanel { transform: translateY(100%); transition: 0.3s; z-index: 100; }
-        #commentPanel.active { transform: translateY(0); }
+        
+        /* লাইক ও কমেন্ট প্যানেল */
+        .side-bar { position: absolute; right: 15px; bottom: 120px; }
     </style>
 </head>
 <body>
 
-    <div class="video-container" id="videoContainer">
-        <div class="video-section">
-            <video loop autoplay muted playsinline src="VID_20251206_041026_071.mp4" onclick="this.muted=!this.muted"></video>
-            <div class="ui-layer">
-                <div class="absolute right-4 bottom-32 flex flex-col gap-6 text-white text-center clickable">
-                    <div onclick="this.querySelector('i').classList.toggle('text-red-500')"><i class="fas fa-heart text-3xl"></i><p class="text-xs">45K</p></div>
-                    <div onclick="toggleComments()"><i class="fas fa-comment-dots text-3xl"></i><p class="text-xs">1.2K</p></div>
-                    <div onclick="location.href='profile.html'"><i class="fas fa-user-circle text-4xl"></i><p class="text-[10px] bg-red-600 rounded-full px-1">Follow</p></div>
+    <div class="main-swipe-container" id="feedContainer">
+        
+        <div class="snap-page">
+            <img src="https://picsum.photos/1080/1920?nature" alt="Story">
+            <div class="ui-overlay">
+                <div class="p-4 mt-10 text-white font-bold clickable">STORY</div>
+                <div class="side-bar flex flex-col gap-6 text-white text-center clickable">
+                    <div onclick="this.querySelector('i').classList.toggle('text-red-500')"><i class="fas fa-heart text-3xl"></i><p class="text-xs">12K</p></div>
+                    <div onclick="alert('Comments opening...')"><i class="fas fa-comment-dots text-3xl"></i><p class="text-xs">200</p></div>
                 </div>
             </div>
         </div>
+
+        <div class="snap-page">
+            <video loop playsinline autoplay muted src="VID_20251206_041026_071.mp4" onclick="this.muted=!this.muted"></video>
+            <div class="ui-overlay">
+                <div class="side-bar flex flex-col gap-6 text-white text-center clickable">
+                    <div onclick="this.querySelector('i').classList.toggle('text-red-500')"><i class="fas fa-heart text-3xl"></i><p class="text-xs">45K</p></div>
+                    <div onclick="alert('Comments opening...')"><i class="fas fa-comment-dots text-3xl"></i><p class="text-xs">1.2K</p></div>
+                    <div onclick="location.href='profile.html'"><i class="fas fa-user-circle text-4xl"></i></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div id="commentPanel" class="fixed bottom-0 w-full h-1/2 bg-zinc-900 rounded-t-3xl p-4 text-white overflow-y-auto">
-        <div class="flex justify-between border-b border-zinc-700 pb-2 mb-4">
-            <h3 class="font-bold">Comments</h3>
-            <i class="fas fa-times text-xl cursor-pointer" onclick="toggleComments()"></i>
-        </div>
-        <div id="commentList" class="space-y-4 text-sm">
-            <p><strong>@User1:</strong> Nice video! ❤️</p>
-            <p><strong>@User2:</strong> This is amazing!</p>
-        </div>
-        <div class="fixed bottom-0 left-0 w-full p-3 bg-zinc-900 border-t border-zinc-700 flex gap-2">
-            <input id="cInput" type="text" placeholder="Add a comment..." class="flex-1 bg-zinc-800 rounded-full px-4 py-2 outline-none">
-            <button onclick="addComment()" class="text-blue-500 font-bold">Post</button>
-        </div>
-    </div>
-
-    <div class="fixed bottom-0 w-full h-16 bg-black flex justify-around items-center border-t border-zinc-900 z-50">
+    <div class="fixed bottom-0 w-full h-16 bg-black/90 flex justify-around items-center border-t border-zinc-900 z-50">
         <i class="fas fa-home text-2xl text-white" onclick="location.reload()"></i>
         <i class="fas fa-search text-2xl text-zinc-500"></i>
-        <label class="cursor-pointer"><i class="far fa-plus-square text-3xl text-white"></i><input type="file" accept="video/*" class="hidden" onchange="addNewVideo(this)"></label>
+        
+        <label class="clickable cursor-pointer">
+            <div class="bg-gradient-to-tr from-yellow-400 to-purple-600 p-0.5 rounded-lg">
+                <div class="bg-black rounded-lg px-3 py-1">
+                    <i class="fas fa-plus text-white text-xl"></i>
+                </div>
+            </div>
+            <input type="file" accept="video/*,image/*" class="hidden" onchange="uploadContent(this)">
+        </label>
+        
         <i class="far fa-heart text-2xl text-zinc-500"></i>
-        <img src="https://i.pravatar.cc/150?u=mozahar" class="w-8 h-8 rounded-full border border-white" onclick="location.href='profile.html'">
+        <img src="https://i.pravatar.cc/150?u=mozahar" class="w-8 h-8 rounded-full border border-white clickable" onclick="location.href='profile.html'">
     </div>
 
     <script>
-        function toggleComments() { document.getElementById('commentPanel').classList.toggle('active'); }
-        function addComment() {
-            let val = document.getElementById('cInput').value;
-            if(val) {
-                document.getElementById('commentList').innerHTML += `<p><strong>@Me:</strong> ${val}</p>`;
-                document.getElementById('cInput').value = '';
-            }
-        }
-        function addNewVideo(input) {
+        // কন্টেন্ট আপলোড ফাংশন
+        function uploadContent(input) {
             if (input.files[0]) {
-                const url = URL.createObjectURL(input.files[0]);
-                const container = document.getElementById('videoContainer');
-                const newSection = document.createElement('div');
-                newSection.className = 'video-section';
-                newSection.innerHTML = `<video loop autoplay playsinline src="${url}" onclick="this.muted=!this.muted"></video>`;
-                container.prepend(newSection);
+                const file = input.files[0];
+                const url = URL.createObjectURL(file);
+                const container = document.getElementById('feedContainer');
+                const newPage = document.createElement('div');
+                newPage.className = 'snap-page';
+
+                if (file.type.startsWith('video')) {
+                    newPage.innerHTML = `
+                        <video loop autoplay playsinline src="${url}" onclick="this.muted=!this.muted"></video>
+                        <div class="ui-overlay"><div class="side-bar text-white text-center clickable"><div><i class="fas fa-heart text-3xl"></i><p class="text-xs">0</p></div></div></div>`;
+                } else {
+                    newPage.innerHTML = `
+                        <img src="${url}">
+                        <div class="ui-overlay"><div class="side-bar text-white text-center clickable"><div><i class="fas fa-heart text-3xl"></i><p class="text-xs">0</p></div></div></div>`;
+                }
+
+                container.prepend(newPage); // নতুন কন্টেন্ট সবার উপরে যোগ হবে
                 container.scrollTop = 0;
+                alert("আপনার কন্টেন্ট সফলভাবে সোয়াইপ লিস্টে যোগ হয়েছে!");
             }
         }
+
+        // সোয়াইপ করার সময় ভিডিও প্লে/পজ কন্ট্রোল
+        const container = document.getElementById('feedContainer');
+        container.addEventListener('scroll', () => {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(v => {
+                const rect = v.getBoundingClientRect();
+                if(rect.top >= 0 && rect.top < window.innerHeight) { v.play(); } 
+                else { v.pause(); }
+            });
+        });
     </script>
 </body>
 </html>
