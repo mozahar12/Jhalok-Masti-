@@ -3,105 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti - Home</title>
+    <title>Jhalok Masti</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        
-        /* ভিডিও লেয়ার */
-        .video-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
+        .v-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         video { width: 100%; height: 100%; object-fit: cover; }
-
-        /* ইউজার ইন্টারফেস (বাটনগুলো) */
-        .ui-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            pointer-events: none; /* ভিডিওর ওপর ক্লিক করার সুবিধা */
-        }
-
-        .clickable { pointer-events: auto; cursor: pointer; }
-
-        /* নিচের বার */
-        .bottom-nav {
-            background: rgba(0,0,0,0.9);
-            height: 70px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #333;
-        }
+        .ui-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; }
+        .clickable { pointer-events: auto; }
+        .nav-gradient { background: linear-gradient(transparent, rgba(0,0,0,0.8)); }
     </style>
 </head>
 <body>
 
-    <div class="video-wrapper">
-        <video id="mainVideo" playsinline loop autoplay muted src="VID_20251206_041026_071.mp4"></video>
+    <div class="v-container">
+        <video id="mainFeed" playsinline loop autoplay muted src="VID_20251206_041026_071.mp4"></video>
     </div>
 
-    <div class="ui-container">
-        <div class="p-4 mt-8 flex gap-3 clickable overflow-x-auto">
-            <div class="w-14 h-14 rounded-full border-2 border-dashed border-white flex items-center justify-center bg-black/20">
-                <i class="fas fa-plus text-white text-xl"></i>
+    <div class="ui-overlay">
+        <div class="p-4 flex justify-between items-center text-white clickable">
+            <i class="fas fa-camera text-2xl"></i>
+            <div class="flex gap-4 font-bold">
+                <span class="border-b-2 border-white">For You</span>
+                <span class="opacity-50">Following</span>
             </div>
-            <div id="storyItems" class="flex gap-3"></div>
+            <i class="fas fa-search text-2xl"></i>
         </div>
 
         <div class="absolute right-4 bottom-32 flex flex-col gap-6 text-white text-center clickable">
-            <div onclick="alert('Liked!')"><i class="fas fa-heart text-3xl text-red-500"></i><p class="text-xs">45K</p></div>
-            <div><i class="fas fa-comment-dots text-3xl"></i><p class="text-xs">1.2K</p></div>
-            <div onclick="window.location.href='profile.html'">
-                <i class="fas fa-user-circle text-4xl"></i>
-                <p class="text-xs mt-1">Profile</p>
-            </div>
+            <div class="flex flex-col items-center"><i class="fas fa-heart text-3xl"></i><p class="text-xs font-bold">45K</p></div>
+            <div class="flex flex-col items-center"><i class="fas fa-comment text-3xl"></i><p class="text-xs font-bold">1.2K</p></div>
+            <div class="flex flex-col items-center"><i class="fas fa-share text-3xl"></i><p class="text-xs font-bold">Share</p></div>
         </div>
 
-        <div class="bottom-nav clickable">
-            <div onclick="location.reload()"><i class="fas fa-home text-2xl text-white"></i></div>
-            <div><i class="fas fa-search text-2xl text-zinc-500"></i></div>
-            
-            <label class="cursor-pointer">
-                <i class="far fa-plus-square text-4xl text-white"></i>
-                <input type="file" id="videoInput" accept="video/*" class="hidden" onchange="uploadVideo(this)">
-            </label>
-            
-            <div onclick="window.location.href='profile.html'"><i class="far fa-user-circle text-2xl text-zinc-500"></i></div>
+        <div class="nav-gradient p-3 clickable">
+            <div class="flex justify-around items-center text-white pb-2">
+                <i class="fas fa-home text-2xl" onclick="location.reload()"></i>
+                <i class="fas fa-search text-2xl"></i>
+                <label class="cursor-pointer">
+                    <i class="far fa-plus-square text-3xl"></i>
+                    <input type="file" accept="video/*" class="hidden" onchange="upVid(this)">
+                </label>
+                <i class="far fa-heart text-2xl"></i>
+                <img src="https://i.pravatar.cc/150?u=mozahar" class="w-8 h-8 rounded-full border border-white" onclick="location.href='profile.html'">
+            </div>
         </div>
     </div>
 
     <script>
-        // ভিডিও আপলোড করার ফাংশন
-        function uploadVideo(input) {
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                const videoURL = URL.createObjectURL(file);
-                const player = document.getElementById('mainVideo');
-                
-                player.src = videoURL;
-                player.muted = false; // আপলোডের পর সাউন্ড চালু হবে
-                player.play();
-                alert("আপনার ভিডিওটি আপলোড হয়েছে এবং প্লে হচ্ছে!");
+        function upVid(input) {
+            if (input.files[0]) {
+                const url = URL.createObjectURL(input.files[0]);
+                const v = document.getElementById('mainFeed');
+                v.src = url;
+                v.play();
+                v.muted = false;
             }
         }
-
-        // স্ক্রিনে টাচ করলে মিউট বন্ধ হবে
-        document.body.onclick = function() {
-            document.getElementById('mainVideo').muted = false;
-        };
+        document.body.onclick = () => { document.getElementById('mainFeed').muted = false; };
     </script>
 </body>
 </html>
