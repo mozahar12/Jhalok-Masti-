@@ -2,120 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti - Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jhalok Masti - Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ID" crossorigin="anonymous"></script>
-
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        .app-container { height: 100vh; width: 100vw; position: relative; overflow: hidden; }
-        
-        /* ভিডিওর জন্য সোয়াইপ কন্টেইনার */
-        .video-feed { height: 100%; width: 100%; display: flex; flex-direction: column; transition: transform 0.5s ease-in-out; }
-        video { min-width: 100%; height: 100vh; object-fit: cover; scroll-snap-align: start; }
-
-        /* স্টোরি সেকশন */
-        .stories-container {
-            position: absolute; top: 45px; left: 0; width: 100%;
-            display: flex; padding: 10px; overflow-x: auto; z-index: 40; gap: 12px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-        }
-        .story-circle { min-width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f09433; padding: 2px; cursor: pointer; }
-        .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-
-        /* বিজ্ঞাপন ব্যানার (AdMob Banner) */
-        .ad-slot {
-            position: absolute; bottom: 0; width: 100%; height: 50px;
-            background: rgba(255, 255, 255, 0.05); z-index: 50;
-            display: flex; align-items: center; justify-content: center;
-            color: #555; font-size: 10px; border-top: 1px solid #222;
-        }
-
-        .side-icons { position: absolute; right: 12px; bottom: 120px; display: flex; flex-direction: column; gap: 20px; z-index: 30; }
-        .icon-btn { color: white; text-align: center; cursor: pointer; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-        .icon-btn i { font-size: 28px; }
-        .icon-btn span { font-size: 11px; display: block; margin-top: 2px; }
+        body { background-color: #000; color: white; font-family: sans-serif; }
+        .grid-item { aspect-ratio: 9/16; background-color: #222; overflow: hidden; position: relative; }
+        .grid-item video { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body>
 
-<div class="app-container" id="swipeArea">
-    <video id="mainVideo" playsinline loop src="VID_20251206_041026_071.mp4"></video>
+    <div class="p-6 flex flex-col items-center border-b border-zinc-800">
+        <div class="w-24 h-24 rounded-full border-2 border-orange-500 p-1 mb-4">
+            <img src="https://i.pravatar.cc/150?u=mozahar" class="w-full h-full rounded-full object-cover">
+        </div>
+        <h2 class="text-xl font-bold">@Mozahar_Creator</h2>
+        <p class="text-zinc-400 text-sm mb-4 text-center">নতুন ভিডিও দেখতে আমাদের সাথেই থাকুন! 🎬 #JhalokMasti</p>
+        
+        <div class="flex gap-8 text-center mb-6">
+            <div><p class="font-bold">12</p><p class="text-xs text-zinc-500">ভিডিও</p></div>
+            <div><p class="font-bold">45.2K</p><p class="text-xs text-zinc-500">ফলোয়ার</p></div>
+            <div><p class="font-bold">1.2M</p><p class="text-xs text-zinc-500">লাইক</p></div>
+        </div>
 
-    <div class="stories-container">
-        <label class="min-w-[65px] h-[65px] rounded-full bg-zinc-800 flex items-center justify-center border-2 border-dashed border-zinc-600 cursor-pointer">
-            <i class="fas fa-plus text-white text-xl"></i>
-            <input type="file" accept="image/*" class="hidden" onchange="uploadStory(this)">
-        </label>
-        <div id="storyList" class="flex gap-3"></div>
+        <button class="bg-zinc-800 px-10 py-2 rounded-lg font-semibold text-sm">Edit Profile</button>
     </div>
 
-    <div class="side-icons">
-        <div class="icon-btn"><i class="fas fa-heart text-red-500"></i><span>45K</span></div>
-        <div class="icon-btn" onclick="alert('Ad loading...')"><i class="fas fa-gift text-yellow-400"></i><span>Bonus</span></div>
-        <div class="icon-btn"><i class="fas fa-share"></i><span>Share</span></div>
+    <div class="grid grid-cols-3 gap-1 p-1 mb-20">
+        <div class="grid-item"><video src="VID_20251206_041026_071.mp4" muted></video></div>
+        <div class="grid-item"><video src="videos 22.mp4" muted></video></div>
+        <div class="grid-item"></div> <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
     </div>
 
-    <div class="absolute bottom-20 left-4 text-white z-20 pointer-events-none">
-        <h3 class="font-bold">@Mozahar_Creator</h3>
-        <p class="text-sm opacity-80">সোয়াইপ আপ করে গান শুনুন! 🎵</p>
+    <div class="fixed bottom-0 w-full bg-black border-t border-zinc-900 flex justify-around p-4">
+        <i class="fas fa-home text-2xl text-zinc-500 cursor-pointer" onclick="window.location.href='index.html'"></i>
+        <i class="fas fa-search text-2xl text-zinc-500"></i>
+        <i class="fas fa-plus-square text-2xl text-zinc-500"></i>
+        <i class="fas fa-user text-2xl text-white"></i>
     </div>
 
-    <div class="ad-slot">
-        <span>AD SLOT: Banner Ad will appear here</span>
-    </div>
-</div>
-
-<script>
-    const videos = ["VID_20251206_041026_071.mp4", "videos 22.mp4"];
-    let vIdx = 0;
-    const player = document.getElementById('mainVideo');
-    let touchStartY = 0;
-
-    // ১. সোয়াইপ আপ এবং সাউন্ড ফিক্স
-    document.addEventListener('touchstart', e => touchStartY = e.touches[0].clientY);
-    document.addEventListener('touchend', e => {
-        let touchEndY = e.changedTouches[0].clientY;
-        if (touchStartY - touchEndY > 60) { // Swipe Up
-            vIdx = (vIdx + 1) % videos.length;
-            player.src = videos[vIdx];
-            player.muted = false; // সাউন্ড চালু করা
-            player.play();
-        }
-    });
-
-    // ২. স্টোরি স্থায়ীভাবে সেভ করা
-    function uploadStory(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                let stories = JSON.parse(localStorage.getItem('userStories') || '[]');
-                stories.unshift(e.target.result);
-                localStorage.setItem('userStories', JSON.stringify(stories));
-                loadStories();
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function loadStories() {
-        const list = document.getElementById('storyList');
-        const saved = JSON.parse(localStorage.getItem('userStories') || '[]');
-        list.innerHTML = saved.map(src => `
-            <div class="story-circle"><img src="${src}"></div>
-        `).join('');
-    }
-
-    // প্রথমবার স্ক্রিনে টাচ করলেই মিউজিক চালু হবে
-    document.body.addEventListener('click', () => {
-        player.muted = false;
-        player.play();
-    }, {once: true});
-
-    window.onload = loadStories;
-</script>
 </body>
 </html>
