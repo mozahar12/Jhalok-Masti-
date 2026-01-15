@@ -5,27 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Jhalok Masti</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
 <body class="bg-black text-white h-screen flex flex-col items-center justify-center p-6">
 
-    <div class="w-full max-w-sm">
-        <h1 class="text-4xl font-bold mb-2 text-center bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">Jhalok Masti</h1>
-        <p class="text-zinc-400 text-center mb-10">আপনার বন্ধুদের সাথে যুক্ত হতে লগইন করুন</p>
+    <div class="w-full max-w-sm text-center">
+        <h1 class="text-4xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">Jhalok Masti</h1>
+        <p class="text-zinc-400 mb-10">লগইন করে বন্ধুদের সাথে যুক্ত হন</p>
 
         <div class="space-y-4">
-            <input type="text" placeholder="ইউজারনেম বা ইমেইল" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl focus:outline-none focus:border-red-500">
-            <input type="password" placeholder="পাসওয়ার্ড" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl focus:outline-none focus:border-red-500">
+            <input id="email" type="email" placeholder="আপনার ইমেইল" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl focus:outline-none focus:border-red-500 text-white">
+            <input id="password" type="password" placeholder="পাসওয়ার্ড" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl focus:outline-none focus:border-red-500 text-white">
             
-            <button onclick="location.href='index.html'" class="w-full bg-red-600 hover:bg-red-700 p-4 rounded-xl font-bold text-lg transition">
+            <button onclick="handleLogin()" class="w-full bg-red-600 hover:bg-red-700 p-4 rounded-xl font-bold text-lg transition">
                 লগইন করুন
             </button>
         </div>
 
-        <p class="mt-8 text-center text-zinc-500 text-sm">
-            অ্যাকাউন্ট নেই? <span class="text-red-500 font-bold cursor-pointer">সাইন আপ করুন</span>
+        <p class="mt-8 text-zinc-500 text-sm">
+            অ্যাকাউন্ট নেই? <a href="signup.html" class="text-red-500 font-bold">এখানে সাইন আপ করুন</a>
         </p>
     </div>
 
+    <script>
+        // আপনার সেই আসল Firebase চাবি (Config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh",
+            authDomain: "jhalok-masti.firebaseapp.com",
+            projectId: "jhalok-masti",
+            storageBucket: "jhalok-masti.firebasestorage.app",
+            messagingSenderId: "765019855310",
+            appId: "1:765019855310:web:036371e3a39b6895d"
+        };
+        
+        // Firebase শুরু করা
+        firebase.initializeApp(firebaseConfig);
+
+        function handleLogin() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+
+            if(!email || !pass) {
+                alert("দয়া করে ইমেইল এবং পাসওয়ার্ড লিখুন");
+                return;
+            }
+
+            // লগইন চেক করা
+            firebase.auth().signInWithEmailAndPassword(email, pass)
+                .then((userCredential) => {
+                    // লগইন সফল হলে মেইন পেজে নিয়ে যাবে
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("ভুল ইমেইল বা পাসওয়ার্ড! আবার চেষ্টা করুন।");
+                });
+        }
+    </script>
 </body>
 </html>
