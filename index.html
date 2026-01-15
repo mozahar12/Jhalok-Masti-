@@ -3,100 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jhalok Masti - Upload Story</title>
+    <title>Jhalok Masti - Full Experience</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        .video-container { height: 100vh; width: 100vw; position: relative; }
-        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .app-container { height: 100vh; width: 100vw; position: relative; overflow: hidden; }
         
-        /* স্টোরি বার */
+        /* ভিডিওর জন্য সোয়াইপ কন্টেইনার */
+        .video-wrapper { height: 100%; width: 100%; transition: transform 0.4s ease-out; }
+        video { width: 100%; height: 100vh; object-fit: cover; background: #000; }
+
+        /* স্টোরি দেখার মোডাল */
+        #storyViewer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 100; display: none; align-items: center; justify-content: center;
+        }
+        #storyViewer img { max-width: 100%; max-height: 100%; border-radius: 10px; }
+
+        /* স্টোরি বার ডিজাইন */
         .stories-bar {
             position: absolute; top: 40px; left: 0; width: 100%;
             display: flex; padding: 10px; overflow-x: auto; z-index: 30; gap: 12px;
             background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
         }
-        /* স্টোরি ছাড়ার বাটন স্টাইল */
-        .add-story {
-            min-width: 65px; height: 65px; border-radius: 50%;
-            background: #333; display: flex; align-items: center; 
-            justify-content: center; border: 2px dashed #bbb; cursor: pointer;
-            position: relative;
-        }
-        .add-story i { color: white; font-size: 24px; }
-        .add-story span { position: absolute; bottom: -20px; color: white; font-size: 10px; width: 60px; text-align: center; }
-
-        .story-circle { min-width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f09433; padding: 2px; }
+        .add-story { min-width: 65px; height: 65px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; border: 2px dashed #555; cursor: pointer; }
+        .story-circle { min-width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f09433; padding: 2px; cursor: pointer; }
         .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
-        /* হিডেন ফাইল ইনপুট */
-        #storyInput { display: none; }
-
-        .side-bar { position: absolute; right: 10px; bottom: 100px; display: flex; flex-direction: column; align-items: center; z-index: 20; }
-        .side-icon { color: white; margin-bottom: 22px; cursor: pointer; text-align: center; }
-        .side-icon i { font-size: 28px; }
-        .side-icon span { font-size: 11px; display: block; }
+        .side-bar { position: absolute; right: 12px; bottom: 120px; display: flex; flex-direction: column; gap: 20px; z-index: 20; }
+        .side-icon { color: white; text-align: center; font-size: 28px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .side-icon span { font-size: 12px; display: block; margin-top: 4px; }
     </style>
 </head>
 <body>
 
-    <div class="video-container" onclick="nextVideo()">
-        <video id="mainVideo" playsinline autoplay muted src="VID_20251206_041026_071.mp4"></video>
+<div class="app-container" id="swipeArea">
+    <div class="video-wrapper" id="videoWrapper">
+        <video id="mainVideo" playsinline loop src="VID_20251206_041026_071.mp4"></video>
+    </div>
 
-        <div class="stories-bar" onclick="event.stopPropagation()">
-            <label for="storyInput" class="add-story">
-                <i class="fas fa-plus"></i>
-                <span>Your Story</span>
-            </label>
-            <input type="file" id="storyInput" accept="image/*" onchange="uploadStory(this)">
+    <div id="storyViewer" onclick="closeStory()">
+        <img id="viewingImg" src="">
+    </div>
 
-            <div id="storyList" class="flex gap-3">
-                <div class="story-circle"><img src="https://i.pravatar.cc/150?img=11"></div>
-                <div class="story-circle"><img src="https://i.pravatar.cc/150?img=12"></div>
-            </div>
-        </div>
-        
-        <div class="side-bar">
-            <div class="side-icon" onclick="event.stopPropagation()"><i class="far fa-heart"></i><span>45K</span></div>
-            <div class="side-icon" onclick="event.stopPropagation()"><i class="far fa-comment"></i><span>1.2K</span></div>
-            <div class="side-icon" onclick="event.stopPropagation()"><i class="far fa-paper-plane"></i><span>Share</span></div>
-        </div>
-
-        <div class="absolute bottom-[70px] left-4 text-white z-20 pointer-events-none">
-            <h3 class="font-bold">@Mozahar_Creator</h3>
-            <p class="text-sm">নতুন ভিডিও দেখতে ক্লিক করুন!</p>
+    <div class="stories-bar" onclick="event.stopPropagation()">
+        <label for="storyInput" class="add-story">
+            <i class="fas fa-plus text-white"></i>
+        </label>
+        <input type="file" id="storyInput" accept="image/*" class="hidden" onchange="uploadStory(this)">
+        <div id="storyList" class="flex gap-3">
+            <div class="story-circle" onclick="viewStory('https://i.pravatar.cc/150?img=11')"><img src="https://i.pravatar.cc/150?img=11"></div>
+            <div class="story-circle" onclick="viewStory('https://i.pravatar.cc/150?img=12')"><img src="https://i.pravatar.cc/150?img=12"></div>
         </div>
     </div>
 
-    <script>
-        const videoList = ["VID_20251206_041026_071.mp4", "videos 22.mp4"];
-        let currentVideoIndex = 0;
-        const videoElement = document.getElementById('mainVideo');
+    <div class="side-bar">
+        <div class="side-icon"><i class="fas fa-heart"></i><span>45K</span></div>
+        <div class="side-icon"><i class="fas fa-comment-dots"></i><span>1.2K</span></div>
+        <div class="side-icon"><i class="fas fa-share"></i><span>Share</span></div>
+    </div>
 
-        function nextVideo() {
-            videoElement.muted = false; 
-            currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
-            videoElement.src = videoList[currentVideoIndex];
+    <div class="absolute bottom-20 left-4 text-white z-10 pointer-events-none">
+        <h3 class="font-bold text-lg">@Mozahar_Creator</h3>
+        <p class="text-sm opacity-90">সোয়াইপ করে অন্য ভিডিও দেখুন! 🎬</p>
+    </div>
+</div>
+
+<script>
+    const videoList = ["VID_20251206_041026_071.mp4", "videos 22.mp4"];
+    let currentIdx = 0;
+    const videoElement = document.getElementById('mainVideo');
+    let startY = 0;
+
+    // ১. সোয়াইপ আপ সুবিধা (Swipe Up to change video)
+    document.getElementById('swipeArea').addEventListener('touchstart', e => startY = e.touches[0].clientY);
+    document.getElementById('swipeArea').addEventListener('touchend', e => {
+        let endY = e.changedTouches[0].clientY;
+        if (startY - endY > 50) changeVideo(1); // সোয়াইপ আপ
+        else if (endY - startY > 50) changeVideo(-1); // সোয়াইপ ডাউন
+    });
+
+    function changeVideo(direction) {
+        currentIdx = (currentIdx + direction + videoList.length) % videoList.length;
+        videoElement.src = videoList[currentIdx];
+        videoElement.muted = false; // সাউন্ড অটো চালু হবে
+        videoElement.play();
+    }
+
+    // ২. স্টোরি দেখা ও আপলোড
+    function uploadStory(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const newStory = document.createElement('div');
+                newStory.className = 'story-circle';
+                newStory.onclick = () => viewStory(e.target.result);
+                newStory.innerHTML = `<img src="${e.target.result}">`;
+                document.getElementById('storyList').prepend(newStory);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function viewStory(src) {
+        document.getElementById('viewingImg').src = src;
+        document.getElementById('storyViewer').style.display = 'flex';
+    }
+
+    function closeStory() {
+        document.getElementById('storyViewer').style.display = 'none';
+    }
+
+    // স্ক্রিনে প্রথমবার টাচ করলেই মিউজিক চালু হবে
+    document.body.addEventListener('click', () => {
+        if (videoElement.paused) {
             videoElement.play();
+            videoElement.muted = false;
         }
-
-        // স্টোরি আপলোড করার ফাংশন
-        function uploadStory(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const newStory = document.createElement('div');
-                    newStory.className = 'story-circle';
-                    newStory.innerHTML = `<img src="${e.target.result}">`;
-                    document.getElementById('storyList').prepend(newStory);
-                    alert("আপনার স্টোরি আপলোড হয়েছে!");
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        videoElement.onended = nextVideo;
-    </script>
+    }, {once: true});
+</script>
 </body>
 </html>
