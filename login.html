@@ -9,79 +9,40 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
 <body class="bg-black text-white h-screen flex flex-col items-center justify-center p-6">
-
     <div class="w-full max-w-sm text-center">
-        <h1 class="text-4xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">Jhalok Masti</h1>
-        <p class="text-zinc-400 mb-10">লগইন করে বন্ধুদের সাথে যুক্ত হন</p>
-
+        <h1 class="text-4xl font-bold mb-2 text-red-500">লগইন করুন</h1>
         <div class="space-y-4">
-            <input id="email" type="email" placeholder="আপনার ইমেইল" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl focus:outline-none focus:border-red-500 text-white">
-            
-            <input id="password" type="password" placeholder="পাসওয়ার্ড" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl focus:outline-none focus:border-red-500 text-white">
-            
-            <button onclick="handleLogin()" class="w-full bg-red-600 hover:bg-red-700 p-4 rounded-xl font-bold text-lg transition">
-                লগইন করুন
-            </button>
+            <input id="email" type="email" placeholder="আপনার ইমেইল" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white">
+            <input id="password" type="password" placeholder="পাসওয়ার্ড" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white">
+            <button onclick="handleLogin()" class="w-full bg-red-600 p-4 rounded-xl font-bold">লগইন</button>
         </div>
-
-        <p class="mt-4 text-sm">
-            <a href="#" onclick="forgotPassword()" class="text-zinc-400 hover:text-red-500">পাসওয়ার্ড ভুলে গেছেন?</a>
-        </p>
-
-        <p class="mt-8 text-zinc-500 text-sm">
-            অ্যাকাউন্ট নেই? <a href="signup.html" class="text-red-500 font-bold">এখানে সাইন আপ করুন</a>
-        </p>
+        <p class="mt-4"><a href="#" onclick="forgotPassword()" class="text-zinc-400">পাসওয়ার্ড ভুলে গেছেন?</a></p>
+        <p class="mt-6">অ্যাকাউন্ট নেই? <a href="signup.html" class="text-red-500">সাইন আপ করুন</a></p>
     </div>
 
     <script>
-        // আপনার সঠিক Firebase কনফিগারেশন (আপনার স্ক্রিনশট থেকে নেওয়া)
         const firebaseConfig = {
             apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh",
             authDomain: "jhalok-masti.firebaseapp.com",
             projectId: "jhalok-masti",
             storageBucket: "jhalok-masti.firebasestorage.app",
             messagingSenderId: "765019855310",
-            appId: "1:765019855310:web:036371e3a39b6895d",
-            measurementId: "G-590D9Q2K69"
+            appId: "1:765019855310:web:036371e3a39b6895d"
         };
-        
-        // Firebase শুরু করা
         firebase.initializeApp(firebaseConfig);
 
-        // লগইন করার ফাংশন
         function handleLogin() {
             const email = document.getElementById('email').value;
             const pass = document.getElementById('password').value;
-
-            if(!email || !pass) {
-                alert("দয়া করে ইমেইল এবং পাসওয়ার্ড লিখুন");
-                return;
-            }
-
             firebase.auth().signInWithEmailAndPassword(email, pass)
-                .then((userCredential) => {
-                    // সফল হলে মেইন পেজে নিয়ে যাবে
-                    window.location.href = "index.html";
-                })
-                .catch((error) => {
-                    alert("ভুল ইমেইল বা পাসওয়ার্ড! অথবা Firebase Authentication চালু করা হয়নি।");
-                });
+                .then(() => { window.location.href = "index.html"; })
+                .catch((error) => { alert("ভুল ইমেইল বা পাসওয়ার্ড!"); });
         }
 
-        // পাসওয়ার্ড ভুলে গেলে রিসেট করার ফাংশন
         function forgotPassword() {
             const email = document.getElementById('email').value;
-            if (!email) {
-                alert("প্রথমে আপনার ইমেইলটি বক্সে লিখুন, তারপর এখানে ক্লিক করুন।");
-                return;
-            }
-            firebase.auth().sendPasswordResetEmail(email)
-                .then(() => {
-                    alert("আপনার ইমেইলে একটি পাসওয়ার্ড রিসেট লিঙ্ক পাঠানো হয়েছে। আপনার ইনবক্স চেক করুন!");
-                })
-                .catch((error) => {
-                    alert("সমস্যা: " + error.message);
-                });
+            if(!email) { alert("প্রথমে ইমেইল লিখুন"); return; }
+            firebase.auth().sendPasswordResetEmail(email).then(() => { alert("ইমেইল চেক করুন!"); });
         }
     </script>
 </body>
