@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile</title>
+    <title>Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background: #000; color: white; padding-bottom: 80px; }
-        .vid-card { aspect-ratio: 9/16; background: #111; border: 1px solid #222; }
+        .v-grid { aspect-ratio: 9/16; background: #111; border: 1px solid #222; overflow: hidden; }
     </style>
 </head>
 <body>
 
-    <div class="p-10 flex flex-col items-center border-b border-zinc-900">
+    <div class="p-10 flex flex-col items-center">
         <div class="w-24 h-24 rounded-full border-2 border-orange-500 p-1">
-            <img src="https://i.pravatar.cc/150?u=mozahar" class="rounded-full">
+            <img src="https://i.pravatar.cc/150?u=mozahar" class="w-full h-full rounded-full object-cover">
         </div>
         <h2 class="mt-4 font-bold text-xl">@Mozahar_Creator</h2>
         <div class="flex gap-10 mt-6 text-center">
@@ -26,8 +26,8 @@
     </div>
 
     <div class="grid grid-cols-3 gap-1 p-1">
-        <div class="vid-card" onclick="location.href='index.html'"><video src="VID_20251206_041026_071.mp4" class="w-full h-full object-cover"></video></div>
-        <div class="vid-card" onclick="location.href='index.html'"><video src="videos 22.mp4" class="w-full h-full object-cover"></video></div>
+        <div class="v-grid" onclick="location.href='index.html'"><video src="VID_20251206_041026_071.mp4" class="w-full h-full object-cover"></video></div>
+        <div class="v-grid" onclick="location.href='index.html'"><video src="videos 22.mp4" class="w-full h-full object-cover"></video></div>
     </div>
 
     <div class="fixed bottom-0 w-full h-16 bg-black flex justify-around items-center border-t border-zinc-900">
