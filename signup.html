@@ -9,19 +9,27 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
 <body class="bg-black text-white h-screen flex flex-col items-center justify-center p-6">
+
     <div class="w-full max-w-sm text-center">
         <h1 class="text-4xl font-bold mb-6 text-red-500">নতুন একাউন্ট</h1>
+        
         <div class="space-y-4">
-            <input id="email" type="email" placeholder="ইমেইল লিখুন" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none">
+            <input id="email" type="email" placeholder="ইমেইল দিন" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none">
             <input id="password" type="password" placeholder="পাসওয়ার্ড (৬ অক্ষর)" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none">
-            <button onclick="handleSignup()" class="w-full bg-red-600 p-4 rounded-xl font-bold">একাউন্ট তৈরি করুন</button>
+            
+            <button onclick="handleSignup()" class="w-full bg-red-600 p-4 rounded-xl font-bold hover:bg-red-700 transition">
+                একাউন্ট তৈরি করুন
+            </button>
         </div>
-        <p class="mt-6 text-sm">ইতিমধ্যেই একাউন্ট আছে? <a href="login.html" class="text-red-500 font-bold">লগইন করুন</a></p>
+        
+        <p class="mt-6 text-sm text-zinc-400">
+            ইতিমধ্যেই একাউন্ট আছে? <a href="login.html" class="text-red-500 font-bold">লগইন করুন</a>
+        </p>
     </div>
 
     <script>
-        // আপনার Firebase কনফিগারেশন - যা আমি আপনার স্ক্রিনশট থেকে একদম সঠিক করে দিয়েছি
-        var firebaseConfig = {
+        // আপনার সঠিক Firebase কনফিগারেশন
+        const firebaseConfig = {
             apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh", 
             authDomain: "jhalok-masti.firebaseapp.com",
             projectId: "jhalok-masti",
@@ -29,20 +37,26 @@
             messagingSenderId: "765019855310",
             appId: "1:765019855310:web:036371e3a39b6895d"
         };
+        
+        // Firebase শুরু করা
         firebase.initializeApp(firebaseConfig);
 
         function handleSignup() {
-            var email = document.getElementById('email').value;
-            var pass = document.getElementById('password').value;
-            if(!email || pass.length < 6) { alert("সঠিক ইমেইল ও পাসওয়ার্ড দিন।"); return; }
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
             
+            if(!email || pass.length < 6) { 
+                alert("দয়া করে সঠিক ইমেইল দিন এবং পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।"); 
+                return; 
+            }
+
             firebase.auth().createUserWithEmailAndPassword(email, pass)
-                .then(function() { 
-                    alert("সফল! এখন লগইন করুন।"); 
+                .then(() => { 
+                    alert("সাফল্য! আপনার একাউন্ট তৈরি হয়েছে। এখন লগইন করুন।"); 
                     window.location.href = "login.html"; 
                 })
-                .catch(function(e) { 
-                    alert("ভুল: " + e.message); 
+                .catch((error) => { 
+                    alert("সমস্যা: " + error.message); 
                 });
         }
     </script>
