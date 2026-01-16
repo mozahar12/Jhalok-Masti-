@@ -9,26 +9,18 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
 <body class="bg-black text-white h-screen flex flex-col items-center justify-center p-6">
-
     <div class="w-full max-w-sm text-center">
         <h1 class="text-4xl font-bold mb-6 text-red-500">নতুন একাউন্ট</h1>
-        
         <div class="space-y-4">
-            <input id="email" type="email" placeholder="ইমেইল দিন" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none">
-            <input id="password" type="password" placeholder="পাসওয়ার্ড (৬ অক্ষর)" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none">
-            
-            <button onclick="handleSignup()" class="w-full bg-red-600 p-4 rounded-xl font-bold hover:bg-red-700 transition">
-                একাউন্ট তৈরি করুন
-            </button>
+            <input id="email" type="email" placeholder="ইমেইল লিখুন" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none focus:border-red-500">
+            <input id="password" type="password" placeholder="পাসওয়ার্ড (৬ অক্ষর)" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none focus:border-red-500">
+            <button onclick="handleSignup()" class="w-full bg-red-600 p-4 rounded-xl font-bold hover:bg-red-700 transition">একাউন্ট তৈরি করুন</button>
         </div>
-        
-        <p class="mt-6 text-sm text-zinc-400">
-            ইতিমধ্যেই একাউন্ট আছে? <a href="login.html" class="text-red-500 font-bold">লগইন করুন</a>
-        </p>
+        <p class="mt-6 text-sm text-zinc-400">ইতিমধ্যেই একাউন্ট আছে? <a href="login.html" class="text-red-500 font-bold">লগইন করুন</a></p>
     </div>
 
     <script>
-        // আপনার পূর্ণাঙ্গ এবং সঠিক Firebase কনফিগারেশন
+        // আপনার পূর্ণাঙ্গ API Key সহ কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh", 
             authDomain: "jhalok-masti.firebaseapp.com",
@@ -38,7 +30,6 @@
             appId: "1:765019855310:web:036371e3a39b6895d"
         };
         
-        // Firebase শুরু করা
         firebase.initializeApp(firebaseConfig);
 
         function handleSignup() {
@@ -46,17 +37,17 @@
             const pass = document.getElementById('password').value;
             
             if(!email || pass.length < 6) { 
-                alert("সঠিক ইমেইল ও পাসওয়ার্ড দিন (কমপক্ষে ৬ অক্ষর)।"); 
+                alert("সঠিক ইমেইল দিন এবং পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।"); 
                 return; 
             }
 
             firebase.auth().createUserWithEmailAndPassword(email, pass)
                 .then(() => { 
-                    alert("সফল! এখন লগইন করুন।"); 
+                    alert("সাফল্য! এখন লগইন করুন।"); 
                     window.location.href = "login.html"; 
                 })
                 .catch((error) => { 
-                    alert("ভুল: " + error.message); 
+                    alert("সমস্যা: " + error.message); 
                 });
         }
     </script>
