@@ -20,8 +20,9 @@
     </div>
 
     <script>
+        // এখানেapiKey টি এখন সম্পূর্ণ আছে
         var firebaseConfig = {
-            apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh",
+            apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh", 
             authDomain: "jhalok-masti.firebaseapp.com",
             projectId: "jhalok-masti",
             storageBucket: "jhalok-masti.firebasestorage.app",
@@ -34,9 +35,15 @@
             var email = document.getElementById('email').value;
             var pass = document.getElementById('password').value;
             if(!email || pass.length < 6) { alert("সঠিক ইমেইল ও পাসওয়ার্ড দিন।"); return; }
+            
             firebase.auth().createUserWithEmailAndPassword(email, pass)
-                .then(function() { alert("সফল! এখন লগইন করুন।"); window.location.href = "login.html"; })
-                .catch(function(e) { alert("ভুল: " + e.message); });
+                .then(function() { 
+                    alert("সফল! এখন লগইন করুন।"); 
+                    window.location.href = "login.html"; 
+                })
+                .catch(function(e) { 
+                    alert("ভুল: " + e.message); 
+                });
         }
     </script>
 </body>
