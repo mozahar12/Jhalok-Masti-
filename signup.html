@@ -28,7 +28,7 @@
     </div>
 
     <script>
-        // আপনার সঠিক Firebase কনফিগারেশন
+        // আপনার পূর্ণাঙ্গ এবং সঠিক Firebase কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh", 
             authDomain: "jhalok-masti.firebaseapp.com",
@@ -46,17 +46,17 @@
             const pass = document.getElementById('password').value;
             
             if(!email || pass.length < 6) { 
-                alert("দয়া করে সঠিক ইমেইল দিন এবং পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।"); 
+                alert("সঠিক ইমেইল ও পাসওয়ার্ড দিন (কমপক্ষে ৬ অক্ষর)।"); 
                 return; 
             }
 
             firebase.auth().createUserWithEmailAndPassword(email, pass)
                 .then(() => { 
-                    alert("সাফল্য! আপনার একাউন্ট তৈরি হয়েছে। এখন লগইন করুন।"); 
+                    alert("সফল! এখন লগইন করুন।"); 
                     window.location.href = "login.html"; 
                 })
                 .catch((error) => { 
-                    alert("সমস্যা: " + error.message); 
+                    alert("ভুল: " + error.message); 
                 });
         }
     </script>
