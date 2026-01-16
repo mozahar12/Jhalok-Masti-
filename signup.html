@@ -12,15 +12,15 @@
     <div class="w-full max-w-sm text-center">
         <h1 class="text-4xl font-bold mb-6 text-red-500">নতুন একাউন্ট</h1>
         <div class="space-y-4">
-            <input id="email" type="email" placeholder="ইমেইল লিখুন" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none focus:border-red-500">
-            <input id="password" type="password" placeholder="পাসওয়ার্ড (৬ অক্ষর)" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none focus:border-red-500">
-            <button onclick="handleSignup()" class="w-full bg-red-600 p-4 rounded-xl font-bold hover:bg-red-700 transition">একাউন্ট তৈরি করুন</button>
+            <input id="email" type="email" placeholder="ইমেইল লিখুন" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none">
+            <input id="password" type="password" placeholder="পাসওয়ার্ড (৬ অক্ষর)" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none">
+            <button onclick="handleSignup()" class="w-full bg-red-600 p-4 rounded-xl font-bold">একাউন্ট তৈরি করুন</button>
         </div>
-        <p class="mt-6">ইতিমধ্যেই একাউন্ট আছে? <a href="login.html" class="text-red-500 font-bold">লগইন করুন</a></p>
+        <p class="mt-6 text-sm">ইতিমধ্যেই একাউন্ট আছে? <a href="login.html" class="text-red-500 font-bold">লগইন করুন</a></p>
     </div>
 
     <script>
-        const firebaseConfig = {
+        var firebaseConfig = {
             apiKey: "AIzaSyA7MC6FIIWkQZMLHsZoNezkzdUxJFh",
             authDomain: "jhalok-masti.firebaseapp.com",
             projectId: "jhalok-masti",
@@ -31,12 +31,12 @@
         firebase.initializeApp(firebaseConfig);
 
         function handleSignup() {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
+            var email = document.getElementById('email').value;
+            var pass = document.getElementById('password').value;
             if(!email || pass.length < 6) { alert("সঠিক ইমেইল ও পাসওয়ার্ড দিন।"); return; }
             firebase.auth().createUserWithEmailAndPassword(email, pass)
-                .then(() => { alert("সফল! এখন লগইন করুন।"); window.location.href = "login.html"; })
-                .catch((e) => { alert("ভুল: " + e.message); });
+                .then(function() { alert("সফল! এখন লগইন করুন।"); window.location.href = "login.html"; })
+                .catch(function(e) { alert("ভুল: " + e.message); });
         }
     </script>
 </body>
